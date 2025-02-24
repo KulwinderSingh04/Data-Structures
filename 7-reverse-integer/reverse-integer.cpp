@@ -1,7 +1,6 @@
 class Solution {
 public:
-    int reverse(int x) {
-        long long n = x;
+    int reverse(int n) {
         long long m = 0;
         while(n) {
             int r = n % 10;
