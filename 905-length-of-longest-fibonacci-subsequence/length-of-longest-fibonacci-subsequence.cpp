@@ -10,12 +10,12 @@ public:
         int n = arr.size();
         int mx = 0;
         unordered_map<int, int> m;
-        vector<vector<int>> dp(n + 1, vector<int> (n + 1, -1)); 
+        vector<vector<int>> dp(n + 1, vector<int> (n + 1, 2)); 
         for(int i = 0; i  < n; i++) m[arr[i]] = i;
-        for(int k = n - 1; k >= 0; k--) {
-            for(int j = k - 1; j > 0; j--) {
-                int count = 2 + fun(arr, j, k, m, dp);
-                mx = max(mx, count);
+        for(int j = 1; j < n; j++) {
+            for(int k = j + 1; k < n; k++) {
+                if(m.find(arr[k] - arr[j]) != m.end() && m[arr[k] - arr[j]] < j) dp[j][k] = 1 + dp[m[arr[k] - arr[j]]][j];
+                mx = max(mx, dp[j][k]);
             }
         }
         if(mx == 2) return 0;
