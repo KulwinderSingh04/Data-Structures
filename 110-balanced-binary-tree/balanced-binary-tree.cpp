@@ -11,17 +11,20 @@
  */
 class Solution {
 public:
-    int fun(TreeNode* root) {
-        if(root == NULL) return   0;
-        int l = fun(root -> left);
-        int r = fun(root -> right);
-        if(l == -1 || r == -1) return -1;
-        if(abs(l - r) > 1) return -1;
+    int fun(TreeNode* root, bool& flag) {
+        if(root == NULL) return 0;
+        if(flag == false) return 0;
+        int l = fun(root -> left, flag);
+        int r = fun(root -> right, flag);
+        if(abs(l - r) > 1) {
+            flag = false;
+            return 0;
+        }
         return 1 + max(l, r);
     }
     bool isBalanced(TreeNode* root) {
-        int a = fun(root);
-        if(a == -1) return false;
-        return true;;
+        bool flag = true;
+        fun(root, flag);
+        return flag;
     }
 };
