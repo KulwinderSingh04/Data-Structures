@@ -4,7 +4,7 @@ public:
         vector<int> v(right + 1, 1);
         v[1] = 0;
         for(int i = 2; i <= right; i++) {
-            int x = 2 * i;
+            long long x = 1LL * i * i;
             while(x < right + 1) {
                 v[x] = 0;
                 x += i;
