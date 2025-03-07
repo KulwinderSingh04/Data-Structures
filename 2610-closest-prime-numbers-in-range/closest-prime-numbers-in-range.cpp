@@ -22,6 +22,7 @@ public:
                     l1 = f;
                     l2 = s;
                     mx = s - f;
+                    if(mx <= 2) return {l1, l2};
                 }
             }
         }
