@@ -1,6 +1,7 @@
 class Solution {
 public:
     vector<int> closestPrimes(int left, int right) {
+        if(left <= 2 && right >= 3) return {2, 3};
         vector<int> v(right + 1, 1);
         v[1] = 0;
         for(int i = 2; i <= right; i++) {
