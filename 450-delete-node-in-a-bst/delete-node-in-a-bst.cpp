@@ -18,8 +18,8 @@ public:
             else if(root -> left && root -> right) {
                 TreeNode* pred = root -> left;
                 while(pred -> right) pred = pred -> right;
-                root -> val = pred -> val;
-                root -> left = deleteNode(root -> left, pred -> val);
+                swap(root -> val, pred -> val);
+                root -> left = deleteNode(root -> left, key);
                 return root;
             }
             else {
