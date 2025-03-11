@@ -14,8 +14,7 @@ public:
     TreeNode* deleteNode(TreeNode* root, int key) {
         if(root == NULL) return NULL;
         if(root -> val == key) {
-            if(root -> left == NULL && root -> right == NULL) return NULL;
-            else if(root -> left && root -> right) {
+            if(root -> left && root -> right) {
                 TreeNode* pred = root -> left;
                 while(pred -> right) pred = pred -> right;
                 swap(root -> val, pred -> val);
