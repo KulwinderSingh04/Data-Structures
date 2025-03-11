@@ -11,21 +11,14 @@
  */
 class Solution {
 public:
-    long long fun1(TreeNode* root) {
-        if(root == NULL) return LLONG_MIN;
-        return max((long long)root -> val, max(fun1(root -> left), fun1(root -> right)));
-    }
-    long long fun2(TreeNode* root) {
-        if(root == NULL) return LLONG_MAX;
-        return min((long long)root -> val, min(fun2(root -> left), fun2(root -> right)));
+    bool fun(TreeNode* root, long long mn, long long mx) {
+        if(root == NULL) return true;
+        if(!(root -> val < mx && root -> val > mn)) return false;
+        bool a = fun(root -> left, mn, root -> val);
+        bool b = fun(root -> right, root -> val, mx);
+        return a && b;
     }
     bool isValidBST(TreeNode* root) {
-        if(root == NULL) return true;
-        long long pred = fun1(root -> left);
-        long long succ = fun2(root -> right);
-        if(pred >= root -> val || succ <= root -> val) return false;
-        bool a = isValidBST(root -> left);
-        bool b = isValidBST(root -> right);
-        return a && b;
+        return fun(root, LLONG_MIN, LLONG_MAX);
     }
 };
