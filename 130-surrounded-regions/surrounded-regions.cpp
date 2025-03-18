@@ -2,41 +2,36 @@ class Solution {
 public:
     typedef pair<int, int> pp;
     vector<vector<int>> dir = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    void dfs(vector<vector<char>>& board, int r, int c) {
+        int n = board.size();
+        int m = board[0].size();
+        board[r][c] = 'Y';
+        for(int i = 0; i < 4; i++) {
+            int nr = r + dir[i][0];
+            int nc = c + dir[i][1];
+            if(nr < 0 || nr >= n || nc < 0 || nc >= m || board[nr][nc] != 'O') continue;
+            dfs(board, nr, nc);
+        }
+    }
     void solve(vector<vector<char>>& board) {
         int n = board.size();
         int m = board[0].size();
         queue<pp> q;
         for(int i = 0; i < n; i++) {
             if(board[i][0] == 'O') {
-                q.push({i, 0});
-                board[i][0] = 'Y';
+                dfs(board, i, 0);
             }
             if(board[i][m - 1] == 'O') {
-                q.push({i, m - 1});
-                board[i][m - 1] = 'Y';
+                dfs(board, i, m - 1);
             }
         }
         for(int i = 0; i < m; i++) {
             if(board[0][i] == 'O') {
-                q.push({0, i});
-                board[0][i] = 'Y';
+                dfs(board, 0, i);
+                
             }
             if(board[n - 1][i] == 'O') {
-                q.push({n - 1, i});
-                board[n - 1][i] = 'Y';
-            }
-        }
-        while(q.size()) {
-            auto t = q.front();
-            q.pop();
-            int r = t.first;
-            int c = t.second;
-            for(int i = 0; i < 4; i++) {
-                int nr = r + dir[i][0];
-                int nc = c + dir[i][1];
-                if(nr < 0 || nr >= n || nc < 0 || nc >= m || board[nr][nc] != 'O') continue;
-                q.push({nr, nc});
-                board[nr][nc] = 'Y';
+                dfs(board, n - 1, i);
             }
         }
         for(int i = 0; i < n; i++) {
