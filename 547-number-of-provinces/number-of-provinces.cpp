@@ -1,10 +1,19 @@
 class Solution {
 public:
     void dfs(vector<vector<int>>& adj, int i, vector<int>& visited) {
+        int n = adj.size();
+        queue<int> q;
+        q.push(i);
+        // vector<int> visited(n);
         visited[i] = 1;
-        for(auto it : adj[i]) {
-            if(visited[it] == 0) {
-                dfs(adj, it, visited);
+        while(q.size()) {
+            auto t = q.front();
+            q.pop();
+            for(auto x : adj[t]) {
+                if(visited[x] == 0) {
+                    q.push(x);
+                    visited[x] = 1;
+                }
             }
         }
     }
