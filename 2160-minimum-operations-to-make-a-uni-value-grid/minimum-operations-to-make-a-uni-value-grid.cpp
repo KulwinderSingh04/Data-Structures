@@ -10,8 +10,8 @@ public:
                 v.push_back(grid[i][j]);
             }
         }
-        sort(v.begin(), v.end());
         int t = v.size();
+        nth_element(v.begin(), v.begin() + t / 2, v.end());
         int avg = v[ t / 2];
         int ans = 0;
         for(int i = 0; i < m; i++) {
