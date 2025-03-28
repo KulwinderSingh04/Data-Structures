@@ -36,6 +36,6 @@ public:
         }
         int comp = 0;
         for(int i = 0; i < n; i++) if(par[i] == i) comp++;
-        return cable >= comp - 1 ? comp - 1 : -1;
+        return comp - 1;
     }
 };
