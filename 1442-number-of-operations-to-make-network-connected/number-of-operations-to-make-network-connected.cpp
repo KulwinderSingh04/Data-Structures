@@ -21,6 +21,7 @@ public:
         }
     }
     int makeConnected(int n, vector<vector<int>>& connections) {
+        if(connections.size() < n - 1) return -1;
         vector<int> par(n);
         for(int i = 0; i < n; i++) {
             par[i] = i;
