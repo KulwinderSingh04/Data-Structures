@@ -39,8 +39,8 @@ public:
         long long ans= 0;
         for(auto x : m) {
             ans += 1LL * x.second * (rem - x.second);
-            // rem -= x.second;
+            rem -= x.second;
         }
-        return ans * 1LL / 2;
+        return ans;
     }
 };
