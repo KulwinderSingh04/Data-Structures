@@ -14,10 +14,10 @@ public:
             rank[y_par]++;
         }
         else if(rank[x_par] > rank[y_par]) {
-            par[y_par] = par[x_par];
+            par[y_par] = x_par;
         }
         else {
-            par[x_par] = par[y_par];
+            par[x_par] = y_par;
         }
     }
     long long countPairs(int n, vector<vector<int>>& edges) {
