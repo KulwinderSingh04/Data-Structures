@@ -11,7 +11,7 @@ public:
         }
         vector<int> ans;
         for(int i = 2; i < mx + 1; i++) if(v[i] == 1) ans.push_back(i);
-        return ans;
+        return ans ;
     }
     void funPrime(vector<int>& primeScore, vector<int>& nums, vector<int>& primes) {
         int n = nums.size();
