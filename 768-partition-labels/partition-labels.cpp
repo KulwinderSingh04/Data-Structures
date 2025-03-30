@@ -1,16 +1,16 @@
 class Solution {
 public:
     vector<int> partitionLabels(string s) {
-        map<char, int> m;
         int n = s.size();
-        for(int i = 0; i < n; i++) m[s[i]]++;
-        map<char, int> t;
+        vector<int> hash(26, -1);
+        for(int i = n - 1; i >= 0; i--) if(hash[s[i] - 97] == -1) hash[s[i] - 97] = i;
+        set<char> t;
         int i = 0;
         int j = 0;
         vector<int> ans;
         while(j < n) {
-            t[s[j]]++;
-            if(t[s[j]] == m[s[j]]) t.erase(s[j]);
+            t.insert(s[j]);
+            if(hash[s[j] - 97] == j) t.erase(s[j]);
             if(t.size() == 0) {
                 ans.push_back(j - i + 1);
                 i = j + 1;
