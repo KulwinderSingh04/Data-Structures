@@ -1,10 +1,10 @@
 class Solution {
 public:
     vector<int> partitionLabels(string s) {
-        unordered_map<char, int> m;
+        map<char, int> m;
         int n = s.size();
         for(int i = 0; i < n; i++) m[s[i]]++;
-        unordered_map<char, int> t;
+        map<char, int> t;
         int i = 0;
         int j = 0;
         vector<int> ans;
