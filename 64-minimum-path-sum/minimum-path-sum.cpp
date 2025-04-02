@@ -12,6 +12,17 @@ public:
         int m = grid.size();
         int n = grid[0].size();
         vector<vector<int>> dp(m, vector<int> (n, -1));
-        return fun(grid, m - 1, n - 1, dp);
+        dp[0][0] = grid[0][0];
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if(i == 0 && j == 0) continue;
+                int a = 1e5;
+                if(i - 1 >= 0) a = dp[i - 1][j];
+                int b = 1e5;
+                if(j - 1 >= 0) b = dp[i][j - 1];
+                dp[i][j] = grid[i][j] + min(a, b);
+            }
+        }
+        return dp[m - 1][n - 1];
     }
 };
