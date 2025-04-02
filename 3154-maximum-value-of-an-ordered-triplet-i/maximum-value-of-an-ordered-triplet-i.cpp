@@ -3,15 +3,13 @@ public:
     long long maximumTripletValue(vector<int>& nums) {
         int n = nums.size();
         long long ans = 0;
-        vector<int> leftMax(n), rightMax(n);
-        for(int i = 1; i < n - 1; i++) {
-            leftMax[i] = max(leftMax[i - 1], nums[i - 1]);
+        long long imax = 0;
+        long long dmax = 0;
+        for(int k = 0; k < n; k++) {
+            ans = max(ans, 1LL * dmax * nums[k]);
+            dmax = max(dmax, 1LL * imax - nums[k]);
+            imax = max(imax, 1LL * nums[k]);
         }
-        for(int i = n - 2; i >= 1; i--) {
-            rightMax[i] = max(rightMax[i + 1], nums[i + 1]);
-        }
-        for(int i =1; i < n - 1; i++) 
-            ans = max(ans,1LL * (leftMax[i] - nums[i]) * rightMax[i]);
         return ans;
     }
 };
