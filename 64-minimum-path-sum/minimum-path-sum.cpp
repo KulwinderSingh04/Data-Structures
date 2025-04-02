@@ -1,7 +1,7 @@
 class Solution {
 public:
     int fun(vector<vector<int>>& grid, int i, int j, vector<vector<int>>& dp) {
-        if(i < 0 || j < 0) return 10e5;
+        if(i < 0 || j < 0) return 10e4;
         if(i == 0 && j == 0) return grid[0][0];
         if(dp[i][j] != -1) return dp[i][j];
         int a = fun(grid, i - 1, j, dp);
