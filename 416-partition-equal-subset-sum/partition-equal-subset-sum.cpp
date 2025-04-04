@@ -16,21 +16,21 @@ public:
         for(int i = 0; i < n; i++) sum1 += nums[i];
         if(sum1 % 2 == 1) return false;
         vector<vector<int>> dp(n, vector<int> (sum1 / 2 + 1, -1));
-        // for(int i = 0; i < n; i++) {
-        //     for(int s = 0; s < sum1 / 2 + 1; s++){
-        //         if(s == 0) dp[i][s] = true;
-        //         else if(i == 0) {
-        //             if(arr[i] == s) dp[i][s] = true;
-        //             else dp[i][s] = false;
-        //         }
-        //         else {
-        //             bool p = false;
-        //             if(s - arr[i] >= 0) p = dp[i - 1][s - arr[i]];
-        //             bool np = dp[i - 1][s];
-        //             dp[i][s] = p || np;
-        //         }
-        //     }
-        // }
-        return fun(nums, n - 1, sum1, sum2, dp);
+        for(int i = 0; i < n; i++) {
+            for(int s = 0; s < sum1 / 2 + 1; s++){
+                if(s == 0) dp[i][s] = true;
+                else if(i == 0) {
+                    if(nums[i] == s) dp[i][s] = true;
+                    else dp[i][s] = false;
+                }
+                else {
+                    bool p = false;
+                    if(s - nums[i] >= 0) p = dp[i - 1][s - nums[i]];
+                    bool np = dp[i - 1][s];
+                    dp[i][s] = p || np;
+                }
+            }
+        }
+        return dp[n - 1][sum1 / 2];
     }
 };
