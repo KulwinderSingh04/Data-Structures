@@ -11,26 +11,16 @@
  */
 class Solution {
 public:
-    void fun(TreeNode* root, unordered_map<int, int>& m, int d,int& mxDepth) {
-        if(root == NULL) return;
-        m[root -> val] = d;
-        mxDepth = max(mxDepth, d);
-        fun(root -> left, m, d + 1, mxDepth);
-        fun(root -> right, m, d + 1, mxDepth);
-    }
-    TreeNode* lca(TreeNode* root, unordered_map<int, int>& m,int mx) {
-        if(root == NULL) return NULL;
-        if(m[root -> val] == mx) return root;
-        TreeNode* left = lca(root -> left, m, mx);
-        TreeNode* right = lca(root -> right, m, mx);
-        if(left && right) return root;
-        if(left) return left;
-        return right;
+    pair<int, TreeNode*> fun(TreeNode* root) {
+        if(root == NULL) return {0, NULL};
+        auto left = fun(root -> left);
+        auto right = fun(root -> right);
+        if(left.first == right. first) return {left.first + 1, root};
+        else if(left.first > right.first) return {left.first + 1, left.second};
+        else return {right.first + 1, right.second};
     }
     TreeNode* subtreeWithAllDeepest(TreeNode* root) {
-        unordered_map<int , int> m;
-        int mxDepth = 0;
-        fun(root, m, 0, mxDepth);
-        return lca(root, m, mxDepth);
+        auto t = fun(root);
+        return t.second;
     }
 };
