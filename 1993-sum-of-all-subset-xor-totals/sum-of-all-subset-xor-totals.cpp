@@ -1,18 +1,28 @@
 class Solution {
 public:
-    void fun(vector<int>& nums, int i, int& xo, int& ans) {
-        int n = nums.size();
-        if(i == n) return;
-        int x = xo;
-        xo ^= nums[i];
-        ans += xo;
-        fun(nums, i + 1, xo, ans);
-        xo = x;
-        fun(nums, i + 1, xo, ans);
+    string convert(int a) {
+        string s = "";
+        while(a != 0) {
+            s += a % 2 + 48;
+            a /= 2;
+        }
+        return s;
+    }
+    int revCon(string s) {
+        int ans = 0;
+        int n = s.size();
+        for(int i = n - 1; i >= 0; i--) {
+            ans += (s[i] - 48) * pow(2, n - 1 - i);
+        }
+        return ans;
     }
     int subsetXORSum(vector<int>& nums) {
-        int ans = 0, xo = 0;
-        fun(nums, 0, xo, ans);
-        return ans;
+        int n = nums.size();
+        int a = 0;
+        for(int i = 0; i < n; i++) a |= nums[i];
+        string s = convert(a);
+        reverse(s.begin(), s.end());
+        for(int i = 0; i < n -1; i++) s += '0';
+        return revCon(s);
     }
 };
