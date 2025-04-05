@@ -6,6 +6,8 @@ public:
             s += a % 2 + 48;
             a /= 2;
         }
+        
+        reverse(s.begin(), s.end());
         return s;
     }
     int revCon(string s) {
@@ -21,7 +23,6 @@ public:
         int a = 0;
         for(int i = 0; i < n; i++) a |= nums[i];
         string s = convert(a);
-        reverse(s.begin(), s.end());
         for(int i = 0; i < n -1; i++) s += '0';
         return revCon(s);
     }
