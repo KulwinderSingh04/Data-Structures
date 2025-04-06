@@ -5,9 +5,9 @@ public:
             if(amount % coins[i] == 0) return amount / coins[i];
             return 1e9;
         }
+        if(amount < 0) return 1e9;
         if(dp[i][amount] != -1) return dp[i][amount];
-        int p = 1e9;
-        if(amount - coins[i] >= 0) p = 1 + fun(coins, i, amount - coins[i], dp);
+        int p = 1 + fun(coins, i, amount - coins[i], dp);
         int np = fun(coins, i - 1, amount, dp);
         return dp[i][amount] = min(p, np);
     }
