@@ -13,7 +13,19 @@ public:
     }
     int change(int amount, vector<int>& coins) {
         int n = coins.size();
-        vector<vector<int>> dp(n, vector<int> (amount + 1, -1));
-        return fun(coins, n - 1, amount, dp);
+        vector<vector<uint64_t>> dp(n, vector<uint64_t> (amount + 1, -1));
+        for(int a = 0; a < amount + 1; a++) {
+            if(a % coins[0] == 0) dp[0][a] = 1;
+            else dp[0][a] = 0; 
+        }
+        for(int i = 1; i < n; i++) {
+            for(int a = 0; a < amount + 1; a++) {
+                uint64_t p = 0;
+                if(a - coins[i] >= 0) p = dp[i][a - coins[i]];
+                uint64_t np = dp[i - 1][a];
+                dp[i][a] = p + np;
+            }
+        }
+        return dp[n - 1][amount];
     }
 };
