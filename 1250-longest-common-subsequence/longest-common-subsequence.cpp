@@ -1,7 +1,19 @@
 class Solution {
 public:
     int fun(string text1, string& text2, int i, int j, vector<vector<int>>& dp) {
-        if(i < 0 || j < 0) return 0;
+        if(i == 0 || j == 0) {
+            if(i != 0) {
+                for(int k = 0; k <= i; k++) {
+                    if(text1[k] == text2[j]) return 1;
+                }
+            }
+            else {
+                for(int k = 0; k <= j; k++) {
+                    if(text2[k] == text1[i]) return 1;
+                }
+            }
+            return 0;
+        }
         if(dp[i][j] != -1) return dp[i][j];
         if(text1[i] == text2[j]) return 1 + fun(text1, text2, i - 1, j - 1, dp);
         return dp[i][j] = max(fun(text1, text2, i - 1, j, dp), fun(text1, text2, i , j - 1, dp));
