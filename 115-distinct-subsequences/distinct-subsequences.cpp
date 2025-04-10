@@ -3,11 +3,8 @@ public:
     int fun(string& s, string& t, int i, int j, vector<vector<int>>& dp) {
         int n = s.size();
         int m = t.size();
-        if(i >= n) {
-            if(j >= m) return 1;
-            return 0;
-        }
         if(j >= m) return 1;
+        if(i >= n) return 0;
         if(dp[i][j] != -1) return dp[i][j];
         int a = 0;
         if(s[i] == t[j]) a = fun(s, t, i + 1, j + 1, dp); 
