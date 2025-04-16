@@ -15,7 +15,17 @@ public:
         cuts.push_back(n);
         sort(cuts.begin(), cuts.end());
         int t = cuts.size();
-        vector<vector<int>> dp(t, vector<int> (t, -1));
-        return fun(cuts, 1, t - 2, dp);
+        vector<vector<int>> dp(t, vector<int> (t, 0));
+        for(int i = t - 2; i >= 1; i--) {
+            for(int j = i; j < t - 1; j++) {
+                int mn = INT_MAX;
+                for(int k = i; k <= j; k++) {
+                    int steps = cuts[j + 1] - cuts[i - 1] + dp[i][k - 1] + dp[k + 1][j];
+                    mn = min(mn, steps);
+                }
+                dp[i][j] = mn;
+            }
+        }
+        return dp[1][t - 2];
     }
 };
