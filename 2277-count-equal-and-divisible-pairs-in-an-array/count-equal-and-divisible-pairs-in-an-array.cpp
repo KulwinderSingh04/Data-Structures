@@ -5,10 +5,10 @@ public:
         int i = 0;
         int count = 0;
         while(i < n) {
-            int j = i + 1;
+            int j = 0;
             while(j < n) {
-                if(nums[i] == nums[j] && (i * j) % k == 0) count++;
-                j++;
+                if(j > i && nums[i] == nums[j]) count++;
+                j += k / __gcd(k, i);
             }
             i++;
         }
