@@ -9,13 +9,13 @@ public:
         for(int i = 0; i < t.size(); i++) {
             if(t[i] == ch) freq++;
             else {
-                ans += to_string(freq);
+                ans += freq + 48;
                 ans += ch;
                 ch = t[i];
                 freq = 1;
             }
         }
-        ans += to_string(freq);
+        ans += freq + 48;
         ans += ch;
         return ans;
     }
