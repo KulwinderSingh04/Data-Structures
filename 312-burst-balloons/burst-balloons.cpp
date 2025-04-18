@@ -17,7 +17,17 @@ public:
         nums.push_back(1);
         
         int n = nums.size();
-        vector<vector<int>> dp(n, vector<int> (n, -1));
-        return fun(nums, 1, n - 2, dp);
+        vector<vector<int>> dp(n, vector<int> (n, 0));
+        for(int i = n - 2; i >= 1; i--) {
+            for(int j = i; j < n - 1; j++) {
+                int mx = 0;
+                for(int k = i; k <= j; k++) {
+                    int a = nums[i - 1] * nums[k] * nums[j + 1] + dp[i][k - 1] + dp[k + 1][j];
+                    mx = max(mx, a);
+                }
+                dp[i][j] = mx;
+            }
+        }
+        return dp[1][n - 2];
     }
 };
