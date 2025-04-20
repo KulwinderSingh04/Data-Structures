@@ -20,7 +20,18 @@ public:
     }
     int minCut(string s) {
         int n = s.size();
-        vector<int> dp(n, -1);
-        return fun(s, 0, n, dp) - 1;
+        vector<int> dp(n + 1, 0);
+        for(int i = n - 1; i >= 0; i--) {
+            int mn = INT_MAX;
+            for(int k = i; k < n; k++) {
+                int steps = INT_MAX;
+                if(isPal(s, i, k)) {
+                    steps = 1 + dp[k + 1];
+                    mn = min(mn, steps);
+                }
+            }
+            dp[i] = mn;
+        }
+        return dp[0] - 1;
     }
 };
