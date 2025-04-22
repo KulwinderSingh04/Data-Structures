@@ -1,70 +1,43 @@
 class Solution {
 public:
-    using ll = long long;
-    vector<ll> seg_tree;
-
-    //Update segment tree at index query_idx
-    void updateSegTree(int st_idx, int s, int e, int query_idx) {
-        if(query_idx < s || query_idx > e){
+    void segUpdate(vector<long long>& segTree, int idx, int i, int l, int r) {
+        if(l == r) {
+            segTree[i] = 1;
             return;
         }
-
-        if(s == e){
-            seg_tree[st_idx]++;
-            return;
+        int mid = l + (r - l) / 2;
+        if(idx <= mid) {
+            segUpdate(segTree, idx, 2 * i + 1, l, mid);
         }
-
-        int mid = s + (e - s) / 2;
-        int leftChild = 2 * st_idx;
-        int rightChild = leftChild + 1;
-
-        updateSegTree(leftChild, s, mid, query_idx);
-        updateSegTree(rightChild, mid + 1, e, query_idx);
-
-        seg_tree[st_idx] = seg_tree[leftChild] + seg_tree[rightChild];
+        else {
+            segUpdate(segTree, idx, 2 * i + 2, mid + 1, r);
+        }
+        segTree[i] = segTree[2 * i + 1] + segTree[2 * i + 2];
     }
-
-    //Query sum in range [qs, qe]
-    ll rangeSumQuery(int st_idx, int s, int e, int qs, int qe) {
-        if(qs > e || qe < s){
-            return 0;
-        }
-        if(qs <= s && e <= qe){
-            return seg_tree[st_idx];
-        }
-
-        int mid = s + (e - s) / 2;
-        int leftChild= 2 * st_idx;
-        int rightChild = leftChild + 1;
-
-        ll left = rangeSumQuery(leftChild, s, mid, qs, qe);
-        ll right = rangeSumQuery(rightChild, mid + 1, e, qs, qe);
-
-        return left + right;
+    
+    long long query(vector<long long>& segTree, int left, int right, int i, int l, int r) {
+        if(r < left || l > right) return 0;
+        if(l >= left && r <= right) return segTree[i];
+        int mid = l + ( r - l) / 2;
+        return query(segTree, left, right, 2 * i + 1, l, mid) + query(segTree, left, right, 2 * i + 2, mid + 1, r);
     }
-
-    // Count number of good triplets
     long long goodTriplets(vector<int>& nums1, vector<int>& nums2) {
-        int n = nums1.size();
-        seg_tree.assign(4 * n, 0);
-
-        unordered_map<int, int> posInNums2;
-        for(int i = 0; i < n; i++){
-            posInNums2[nums2[i]] = i;
+        unordered_map<int, int> m;
+        int n = nums2.size();
+        for(int i = 0; i < n; i++) m[nums2[i]] = i;
+        vector<long long> segTree(4 * n);
+        long long res = 0;
+        segUpdate(segTree, m[nums1[0]], 0, 0, n - 1);
+        for(int i = 1; i < n; i++) {
+            int idx = m[nums1[i]];
+            long long leftCommonCount = query(segTree, 0, idx - 1, 0, 0, n - 1);
+            long long leftUncommonCount = i - leftCommonCount;
+            long long eleAfterIdxNums2 = n - 1 - idx;
+            long long rightCommonCount = eleAfterIdxNums2 - leftUncommonCount;
+            res += leftCommonCount * rightCommonCount;
+            
+            segUpdate(segTree, idx, 0, 0, n - 1);
         }
-
-        ll totalTriplets = 0;
-        updateSegTree(1, 0, n - 1, posInNums2[nums1[0]]);
-
-        for(int i = 1; i < n - 1; ++i){
-            int idx = posInNums2[nums1[i]];
-            ll leftCommon = rangeSumQuery(1, 0, n - 1, 0, idx - 1);
-            ll righTCommon = (n - idx - 1) - (i - leftCommon);
-
-            totalTriplets += leftCommon  * righTCommon;
-            updateSegTree(1, 0, n - 1, idx);
-        }
-
-        return totalTriplets;
+        return res;
     }
 };
