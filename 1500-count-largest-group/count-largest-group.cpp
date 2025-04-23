@@ -10,16 +10,18 @@ public:
     }
     int countLargestGroup(int n) {
         unordered_map<int, int> m;
-        int mx = 0;
+        int count = 0, mx = 0;
         for(int i = 1; i < n + 1; i++) {
             int t = sumDigits(i);
             m[t]++;
-            mx = max(mx, m[t]);
+            if(m[t] == mx) {
+                count++;
+            }
+            else if(m[t] > mx) {
+                mx = m[t];
+                count = 1;
+            }
         }
-        int ans = 0;
-        for(auto x : m) {
-            if(x.second == mx) ans++;
-        }
-        return ans;
+        return count;
     }
 };
