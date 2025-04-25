@@ -6,11 +6,7 @@ public:
         int i = 0;
         int j = n - 1;
         int ans = 0;
-        while(i <= j) {
-            if(i == j) {
-                ans++;
-                break;
-            }
+        while(i < j) {
             if(people[i] + people[j] <= limit) {
                 i++;
                 j--;
@@ -18,6 +14,7 @@ public:
             else j--;
             ans++;
         }
+        if(i == j) ans++;
         return ans;
     }
 };
