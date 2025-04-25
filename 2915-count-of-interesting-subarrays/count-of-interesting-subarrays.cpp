@@ -5,17 +5,13 @@ public:
         long long count = 0;
         long long ans = 0;
         vector<int> v(n);
+        unordered_map<int, int> m;
+        m[0] = 1;
         for(int i = 0; i < n; i++) {
             int rem = nums[i] % modulo;
             if(rem == k) count++;
             v[i] = count;
-        }
-        unordered_map<int, int> m;
-        m[0] = 1;
-        for(int i = 0; i < n; i++) {
-            long long a = 0;
-            a += m[(v[i] - k) % modulo];
-            ans += a;
+            ans += m[(v[i] - k) % modulo];
             m[v[i] % modulo]++;
         }
         return ans;
