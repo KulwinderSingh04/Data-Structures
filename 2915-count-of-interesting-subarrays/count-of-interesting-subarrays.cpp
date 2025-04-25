@@ -13,7 +13,6 @@ public:
         unordered_map<int, int> m;
         m[0] = 1;
         for(int i = 0; i < n; i++) {
-            cout << v[i] << " ";
             long long a = 0;
             a += m[(v[i] - k) % modulo];
             ans += a;
