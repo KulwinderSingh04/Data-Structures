@@ -4,15 +4,15 @@ public:
         int n = nums.size();
         long long count = 0;
         long long ans = 0;
-        vector<int> v(n);
+        int t = 0;
         unordered_map<int, int> m;
         m[0] = 1;
         for(int i = 0; i < n; i++) {
             int rem = nums[i] % modulo;
             if(rem == k) count++;
-            v[i] = count;
-            ans += m[(v[i] - k) % modulo];
-            m[v[i] % modulo]++;
+            t = count;
+            ans += m[(t - k) % modulo];
+            m[t % modulo]++;
         }
         return ans;
 
