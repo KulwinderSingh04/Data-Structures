@@ -5,7 +5,7 @@ public:
         int n = moveTime.size();
         int m = moveTime[0].size();
         vector<vector<int>> dis(n, vector<int> (m, INT_MAX));
-        priority_queue<pair<int, pp>> pq;
+        priority_queue<pair<int, pp>, vector<pair<int, pp>>, greater<pair<int, pp>>> pq;
         pq.push({0, {0, 0}});
         dis[0][0] = 0;
         vector<vector<int>> dir = {{0, -1}, {0, 1}, {1, 0}, {-1, 0}};
