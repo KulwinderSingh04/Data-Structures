@@ -19,11 +19,8 @@ public:
                 int nr = r + dir[i][0];
                 int nc = c + dir[i][1];
                 if(nr < 0 || nc < 0 || nr >= n || nc >= m) continue;
-                int newDis = 0;
-                if(time >= moveTime[nr][nc]) newDis = time + 1;
-                else newDis = moveTime[nr][nc] + 1;
-                if(dis[nr][nc] > newDis) {
-                    dis[nr][nc] = newDis;
+                if(dis[nr][nc] > max(time, moveTime[nr][nc]) + 1) {
+                    dis[nr][nc] = max(time, moveTime[nr][nc]) + 1;
                     pq.push({dis[nr][nc], {nr, nc}});
                 }
             }
