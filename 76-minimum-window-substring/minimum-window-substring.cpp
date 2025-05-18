@@ -1,27 +1,27 @@
 class Solution {
 public:
     string minWindow(string s, string t) {
-        unordered_map<char, int> m;
-        int n = s.size();
-        for(auto x : t) m[x]++;
+        unordered_map<char, int> tmap;
+        for(auto x : t) tmap[x]++;
         int i = 0;
         int j = 0;
-        int count = 0, sIdx = -1;
         int ans = INT_MAX;
+        int pos = -1;
+        int n = s.size(), count = 0;
         while(j < n) {
-            if(m[s[j]] > 0) count++;
-            m[s[j]]--;
+            if(tmap[s[j]] > 0) count++;
+            tmap[s[j]]--;
             while(count == t.size()) {
                 if(ans > j - i + 1) {
                     ans = j - i + 1;
-                    sIdx = i;
+                    pos = i;
                 }
-                m[s[i]]++;
-                if(m[s[i]] > 0) count--; 
+                tmap[s[i]]++;
+                if(tmap[s[i]] > 0) count--;
                 i++;
             }
             j++;
         }
-        return sIdx == -1 ? "" : s.substr(sIdx, ans);
+        return pos == -1 ? "" : s.substr(pos, ans);
     }
 };
