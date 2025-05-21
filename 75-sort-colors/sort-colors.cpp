@@ -6,13 +6,10 @@ public:
         int mid = 0;
         int hi = n - 1;
         while(mid <= hi) {
-            if(nums[mid] == 0){
-                swap(nums[mid], nums[lo]);
-                lo++;
-                mid++;
-            } else if(nums[mid] == 2) {
-                swap(nums[mid], nums[hi]);
-                hi--;
+            if(nums[mid] == 2) {
+                swap(nums[mid], nums[hi--]);
+            } else if(nums[mid] == 0) {
+                swap(nums[mid++], nums[lo++]);
             } else mid++;
         }
     }
