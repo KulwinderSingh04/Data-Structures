@@ -4,7 +4,7 @@ public:
         colArr[i] = color;
         for(auto t : graph[i]) {
             if(colArr[t] == -1) {
-                colArr[t] = !color;
+                // colArr[t] = !color;
                 bool a = dfs(graph, t, !color, colArr);
                 if(a == false) return a;
             }
@@ -19,7 +19,7 @@ public:
         vector<int> colArr(n, -1);
         for(int i = 0; i < n; i++) {
             if(colArr[i] == -1) {
-                bool a = dfs(graph, i, 0, colArr);
+                bool a = dfs(graph, i, 1, colArr);
                 if(a == false) return a;
             }
         }
