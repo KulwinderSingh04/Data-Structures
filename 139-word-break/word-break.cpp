@@ -16,8 +16,18 @@ public:
     bool wordBreak(string s, vector<string>& wordDict) {
         unordered_set<string> dict;
         int n = s.size();
-        vector<int> dp(n, -1);
+        vector<int> dp(n + 1, 0);
         for(auto x : wordDict) dict.insert(x);
-        return fun(0, s, dict, dp);
+        dp[n] = 1;
+        for(int i = n - 1; i >= 0; i--) {
+            for(int j = i; j < s.size(); j++) {
+                string a = s.substr(i, j - i + 1);
+                if(dict.find(a) != dict.end()) {
+                    bool f = dp[j + 1];
+                    if(f) dp[i] = f;
+                }
+            }
+        }
+        return dp[0];
     }
 };
