@@ -4,7 +4,6 @@ public:
         colArr[i] = color;
         for(auto t : graph[i]) {
             if(colArr[t] == -1) {
-                // colArr[t] = !color;
                 bool a = dfs(graph, t, !color, colArr);
                 if(a == false) return a;
             }
