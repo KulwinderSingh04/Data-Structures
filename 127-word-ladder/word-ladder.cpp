@@ -1,25 +1,23 @@
 class Solution {
 public:
-    typedef pair<string, int> pp;
-    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
-        queue<pp> q;
+    int ladderLength(string begin, string end, vector<string>& dict) {
         unordered_set<string> s;
-        for(int i = 0; i < wordList.size(); i++) s.insert(wordList[i]);
-        q.push({beginWord, 1});
+        for(auto x : dict) s.insert(x);
+        queue<pair<string, int>> q;
+        q.push({begin, 1});
         int ans = 0;
         while(q.size()) {
-            auto t = q.front();
+            auto a = q.front();
+            string t = a.first;
+            int time = a.second;
+            if(end == t) ans = time;
             q.pop();
-            if(t.first == endWord) {
-                ans = t.second;
-                break;
-            }
-            for(int i = 0; i < t.first.size(); i++) {
-                string str = t.first;
+            for(int i = 0; i < t.size(); i++) {
+                string str = t;
                 for(int j = 0; j < 26; j++) {
-                    str[i] = j + 97;
+                    str[i] = j + 'a';
                     if(s.find(str) != s.end()) {
-                        q.push({str, t.second + 1});
+                        q.push({str, time + 1});
                         s.erase(str);
                     }
                 }
