@@ -8,7 +8,7 @@ public:
             int nn = n - i;
             int mn2 = max(0, nn - limit);
             int mx2 = min(nn, limit);
-            if(mx2 - mn2 + 1 > 0) ans += mx2 - mn2 + 1;
+             ans += mx2 - mn2 + 1;
         }
         return ans;
     }
