@@ -1,15 +1,17 @@
 class Solution {
 public:
     vector<int> singleNumber(vector<int>& nums) {
-        long long num = 0;
         int n = nums.size();
-        for(auto x : nums) num ^= x;
-        long long rightmostBit = (num & num - 1) ^ num;
-        int b1 = 0, b2 = 0;
+        long long x = 0;
+        for(auto it : nums) x ^= it;
+        int a = 0;
+        int b = 0;
+        long long rightmostBit = x & -x;
         for(int i = 0; i < n; i++) {
-            if((rightmostBit & nums[i]) == 0) b1 ^= nums[i];
-            else b2 ^= nums[i];
+            if(nums[i] & rightmostBit) a ^= nums[i];
+            else b ^= nums[i];
         }
-        return {b1, b2};
+        return {a, b};
+
     }
 };
