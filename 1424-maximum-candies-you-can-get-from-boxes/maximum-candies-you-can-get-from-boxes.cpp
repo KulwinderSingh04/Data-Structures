@@ -9,7 +9,6 @@ public:
         for(auto x : initialBoxes) {
             if(status[x] == 1) {
                 q.push(x);
-                status[x] = 0;
                 vis[x] = 1;
             }
             else closedBoxes.insert(x);
@@ -27,7 +26,6 @@ public:
                 if(vis[x] == 1) continue;
                 if(status[x] == 1) {
                     q.push(x);
-                    status[x] = 0;
                     vis[x] = 1;
                 }
                 else closedBoxes.insert(x);
@@ -37,8 +35,6 @@ public:
                 if(vis[x] == 1) continue;
                 if(status[x] == 1) {
                     q.push(x);
-                    // v.push_back(x);
-                    status[x] = 0;
                     vis[x] = 1;
                 }
             }
