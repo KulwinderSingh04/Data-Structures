@@ -1,6 +1,6 @@
 class Solution {
 public:
-    bool fun(string word, int s1, int e1, int s2, int e2) {
+    bool fun(string& word, int s1, int e1, int s2, int e2) {
         while(s1 <= e1) {
             if(word[s1] < word[s2]) return true;
             if(word[s1] > word[s2]) return false;
