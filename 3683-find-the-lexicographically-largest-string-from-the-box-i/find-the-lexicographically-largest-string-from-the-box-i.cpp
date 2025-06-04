@@ -14,11 +14,11 @@ public:
         if(numFriends == 1) return word;
         int mxLen = n - numFriends + 1;
         int idx = 0;
-        for(int i = 0; i < n; i++) {
+        for(int i = 1; i < n; i++) {
             if(fun(word, idx, min(mxLen + idx, n - 1), i, min(n - 1, mxLen + i))) {
                 idx = i;
             }
         }
-        return word.substr(idx, min(mxLen, n - 1));
+        return word.substr(idx, mxLen);
     }
 };
