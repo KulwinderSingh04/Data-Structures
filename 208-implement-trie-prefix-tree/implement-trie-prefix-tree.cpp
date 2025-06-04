@@ -1,25 +1,10 @@
 class Node {
     public:
-    vector<Node*> links;
     bool flag;
+    vector<Node*> freq;
     Node() {
-        links.resize(26, NULL);
         flag = false;
-    }
-    bool containsKey(char ch) {
-        return links[ch - 'a'] != NULL;
-    }
-    void put(char ch, Node* node) {
-        links[ch - 'a'] = node;
-    }
-    Node* get(char ch) {
-        return links[ch - 'a'];
-    }
-    void setEnd() {
-        flag = true;
-    }
-    bool isEnd() {
-        return flag == true;
+        freq.resize(26, NULL);
     }
 };
 
@@ -31,34 +16,33 @@ public:
     }
     
     void insert(string word) {
-        Node* node = root;
         int n = word.size();
+        Node* node = root;
         for(int i = 0; i < n; i++) {
-            if(!node -> containsKey(word[i])) {
-                Node* newNode = new Node();
-                node -> put(word[i], newNode);
+            if(node -> freq[word[i] - 97] == NULL) {
+                node -> freq[word[i] - 97] = new Node();
             }
-            node = node -> get(word[i]);
+            node = node -> freq[word[i] - 97];
         }
-        node -> setEnd();
+        node -> flag = true;
     }
     
     bool search(string word) {
         int n = word.size();
         Node* node = root;
         for(int i = 0; i < n; i++) {
-            if(!node -> containsKey(word[i])) return false;
-            node = node -> get(word[i]);
+            if(node -> freq[word[i] - 97] == NULL) return false;
+            node = node -> freq[word[i] - 97];
         }
-        return node -> isEnd();
+        return node -> flag;
     }
     
     bool startsWith(string prefix) {
         int n = prefix.size();
         Node* node = root;
         for(int i = 0; i < n; i++) {
-            if(!node -> containsKey(prefix[i])) return false;
-            node = node -> get(prefix[i]);
+            if(node -> freq[prefix[i] - 97] == NULL) return false;
+            node = node -> freq[prefix[i] - 97];
         }
         return true;
     }
