@@ -8,24 +8,27 @@ class Node {
 class Solution {
     Node* root;
 public:
-    void insert(string a) {
+    void insert(int a) {
         Node* node = root;
-        for(int i = 0; i < 32; i++) {
-            if(node -> links[a[i] - 48] == NULL) {
-                node -> links[a[i] - 48] = new Node();
+        for(int i = 31; i >= 0; i--) {
+            int bit = (a >> i) & 1; 
+            // cout << bit << " ";
+            if(node -> links[bit] == NULL) {
+                node -> links[bit] = new Node();
             }
-            node = node -> links[a[i] - 48];
+            node = node -> links[bit];
         }
     }
-    long long maxXor(string a) {
+    long long maxXor(int a) {
         Node* node = root;
         long long x = 0;
-        for(int i = 0; i < 32; i++) {
-            if(node -> links[!(a[i] - 48)]) {
-                x += pow(2, 31 - i);
-                node = node -> links[!(a[i] - 48)];
+        for(int i = 31; i >= 0; i--) {
+            int bit = (a >> i) & 1; 
+            if(node -> links[!bit]) {
+                x += pow(2, i);
+                node = node -> links[!bit];
             } else {
-                node = node -> links[a[i] - 48];
+                node = node -> links[bit];
             }
         }
         return x;
@@ -34,28 +37,11 @@ public:
         root = new Node();
         int n = nums.size();
         for(int i = 0; i < n; i++) {
-            string a(32, '0');
-            int num = nums[i];
-            int j = 0;
-            while(num) {
-                a[j++] = (num % 2 + 48);
-                num /= 2;
-            }
-            reverse(a.begin(), a.end());
-            insert(a);
+            insert(nums[i]);
         }
         long long ans = 0;
         for(int i = 0; i < n; i++) {
-            
-            string a(32, '0');
-            int num = nums[i];
-            int j = 0;
-            while(num) {
-                a[j++] = (num % 2 + 48);
-                num /= 2;
-            }
-            reverse(a.begin(), a.end());
-            ans = max(ans, maxXor(a));
+            ans = max(ans, maxXor(nums[i]));
         }
         return ans;
     }
