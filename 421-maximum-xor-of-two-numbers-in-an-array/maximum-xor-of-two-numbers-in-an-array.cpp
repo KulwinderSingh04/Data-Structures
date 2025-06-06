@@ -25,7 +25,7 @@ public:
         for(int i = 31; i >= 0; i--) {
             int bit = (a >> i) & 1; 
             if(node -> links[!bit]) {
-                x += pow(2, i);
+                x += 1 << i;
                 node = node -> links[!bit];
             } else {
                 node = node -> links[bit];
