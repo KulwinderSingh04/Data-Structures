@@ -1,25 +1,21 @@
 class Solution {
 public:
     string robotWithString(string s) {
-        vector<int> hash(26);
         int n = s.size();
-        for(int i = 0; i < n; i++) hash[s[i] - 97]++;
-        int j = 0;
-        stack<char> st;
-        char mn = 'a';
+        char mn = 'z';
+        vector<char> v(n);
+        for(int i = n - 1; i >=0; i--) {
+            mn = min(s[i], mn);
+            v[i] = mn;
+        }
         string ans = "";
+        stack<char> st;
         for(int i = 0; i < n; i++) {
             st.push(s[i]);
-            hash[s[i] - 97]--;
-            while(mn != 'z' && hash[mn - 97] == 0) mn++;
-            while(st.size() && st.top() <= mn) {
+            while(st.size() && (i + 1 >= n || v[i + 1] >= st.top())) {
                 ans += st.top();
                 st.pop();
             }
-        }
-        while(st.size()){
-            ans += st.top();
-            st.pop();
         }
         return ans;
     }
