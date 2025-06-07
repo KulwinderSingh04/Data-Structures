@@ -1,15 +1,22 @@
 class Solution {
 public:
     typedef pair<char, int> pp;
+    class cmp {
+        public:
+        bool operator()(pair<char, int>& p1, pair<char, int>& p2) {
+            if(p1.first == p2.first) return p1.second < p2.second;
+            return p1.first > p2.first;
+        }
+    };
     string clearStars(string s) {
         int n = s.size();
         unordered_set<int> del;
-        priority_queue<pp, vector<pp>, greater<pp>> pq;
+        priority_queue<pp, vector<pp>, cmp> pq;
         for(int i = 0; i < n; i++) {
             if(s[i] != '*') {
-                pq.push({s[i], -i});
+                pq.push({s[i], i});
             } else {
-                del.insert(-1 * pq.top().second);
+                del.insert(pq.top().second);
                 pq.pop();
             }
         }
