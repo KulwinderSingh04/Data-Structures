@@ -25,7 +25,7 @@ public:
                         // cout << j1 << " " << j2 << endl;
                     }
                 } else {
-                    if(original.find(s.substr(j1, k)) != original.end() && original[s.substr(j1, k)] > use[s.substr(j1, k)]) use[s.substr(j1, k)]++;
+                    if(original.find(s.substr(j1, k)) != original.end()) use[s.substr(j1, k)]++;
                     j1 += k;
                 }
                 if(j1 > j2) j2 = j1;
