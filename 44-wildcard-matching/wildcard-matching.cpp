@@ -2,7 +2,6 @@ class Solution {
 public:
     bool fun(int i, int j, string& s, string& p, vector<vector<int>>& dp) {
         if(i == -1) {
-            cout << j << " ";
             while(j >= 0) {
                 if(p[j] != '*') return false;
                 j--;
