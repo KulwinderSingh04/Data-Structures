@@ -9,12 +9,9 @@ public:
         int ans = 0;
         while(j < n) {
             mp[nums[j]]++;
-            mxFreq = max(mxFreq, mp[nums[j]]);
-            while(mxFreq > k) {
+            while(mp[nums[j]] > k) {
                 mp[nums[i]]--;
                 if(mp[nums[i]] == 0) mp.erase(nums[i]);
-                mxFreq = 0;
-                for(auto x : mp) mxFreq = max(mxFreq, x.second);
                 i++;
             }
             ans = max(ans, j - i + 1);
