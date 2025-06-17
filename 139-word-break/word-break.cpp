@@ -1,33 +1,26 @@
 class Solution {
 public:
-    // bool fun(int idx, string& s, unordered_set<string>& dict, vector<int>& dp) {
-    //     int n = s.size();
-    //     if(idx == n) return true;
-    //     if(dp[idx] != -1) return dp[idx];
-    //     for(int i = idx; i < s.size(); i++) {
-    //         string a = s.substr(idx, i - idx + 1);
-    //         if(dict.find(a) != dict.end()) {
-    //             bool f = fun(i + 1, s, dict, dp);
-    //             if(f) return dp[idx] = f;
-    //         }
-    //     }
-    //     return dp[idx] = false;
-    // }
-    bool wordBreak(string s, vector<string>& wordDict) {
-        unordered_set<string> dict;
-        int n = s.size();
-        vector<int> dp(n + 1, 0);
-        for(auto x : wordDict) dict.insert(x);
-        dp[n] = 1;
-        for(int i = n - 1; i >= 0; i--) {
-            for(int j = i; j < s.size(); j++) {
-                string a = s.substr(i, j - i + 1);
-                if(dict.find(a) != dict.end()) {
-                    bool f = dp[j + 1];
-                    if(f) dp[i] = f;
-                }
+    bool fun(int idx, string& s, unordered_set<string>& st, vector<int>& dp) {
+        if(idx == s.size()) {
+            return true;
+        }
+        if(dp[idx] != -1) return dp[idx];
+        bool t = false;
+        for(int i = idx; i < s.size(); i++) {
+            if(st.find(s.substr(idx, i - idx + 1)) != st.end()) {
+                t = fun(i + 1, s, st, dp);
+                if(t) break;
             }
         }
-        return dp[0];
+        return dp[idx] = t;
+    }
+    bool wordBreak(string s, vector<string>& wordDict) {
+        unordered_set<string> st;
+        for(auto x : wordDict) {
+            st.insert(x);
+        }
+        int n = s.size();
+        vector<int> dp(n, -1);
+        return fun(0, s, st, dp);
     }
 };
