@@ -12,7 +12,16 @@ public:
     }
     bool canJump(vector<int>& nums) {
         int n = nums.size();
-        vector<int> dp(n, -1);
-        return fun(0, nums, dp);
+        vector<int> dp(n, 0);
+        dp[n - 1] = 1;
+        for(int  i = n - 2; i >= 0; i--) {
+            for(int j = i + 1; j <= min(n - 1, i + nums[i]); j++) {
+                if(dp[j]) {
+                    dp[i] = dp[j];
+                    break;
+                }
+            }
+        }
+        return dp[0];
     }
 };
