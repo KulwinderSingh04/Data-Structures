@@ -3,6 +3,7 @@ public:
     int fun(int i, int j, vector<int>& nums, vector<vector<int>>& dp) {
         if(i == j) return nums[i];
         if(i > j) return 0;
+        if(dp[i][j] != -1) return dp[i][j];
         int a = nums[i] + min(fun(i + 2, j, nums, dp), fun(i + 1, j - 1, nums, dp));
         int b = nums[j] + min(fun(i, j - 2, nums, dp), fun(i + 1, j - 1, nums, dp));
 
