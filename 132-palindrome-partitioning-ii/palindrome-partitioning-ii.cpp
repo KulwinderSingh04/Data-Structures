@@ -20,7 +20,6 @@ public:
                 mn = min(mn, 1 + fun(i + 1, s, dp));
             }
         }
-        cout << mn << " ";
         return dp[idx] = mn;
     }
     int minCut(string s) {
