@@ -18,9 +18,9 @@ public:
         }
         return count >= k;
     }
-    void fun(vector<int>& canUse, string& actual, string& s, string& ans, int& k) {
+    void fun(vector<int>& canUse, string& actual, string& s, string& ans, int& k, int& mxLen) {
         // int n = word.size();
-        if(s.size() > 7) return;
+        if(s.size() > mxLen) return;
         if(helper(s, actual, k)) {
             cout << s << " ";
             if(ans.size() < s.size()) {
@@ -33,7 +33,7 @@ public:
             if(canUse[i] != 0) {
                 s.push_back(i + 'a');
                 canUse[i]--;
-                fun(canUse, actual, s, ans, k);
+                fun(canUse, actual, s, ans, k, mxLen);
                 canUse[i]++;
                 s.pop_back();
                 // if(ans != "") return;
@@ -50,7 +50,8 @@ public:
         for(auto x : freq) {
             canUse[x.first - 'a'] = x.second / k;
         }
-        fun(canUse, s, a, ans, k);
+        int mxLen = s.size() / k;
+        fun(canUse, s, a, ans, k, mxLen);
         return ans;
     }
 };
