@@ -26,7 +26,7 @@ public:
         long long ans = 0;
         for(int i = 0; i < n; i++) {
             int idx = binSearch(nums, target - nums[i]);
-            cout << idx << " ";
+            // cout << idx << " ";
             if(idx - i >= 0) {
                 ans = (ans + pow(2, idx - i)) % MOD;
             }
