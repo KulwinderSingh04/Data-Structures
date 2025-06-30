@@ -12,50 +12,57 @@ public:
 
     // Encodes a tree to a single string.
     string serialize(TreeNode* root) {
-        string s = "";
         queue<TreeNode*> q;
+        q.push(root);
+        string ans = "";
+        while(q.size()) {
+            auto t = q.front();
+            q.pop();
+            if(t) ans += to_string(t -> val) + ",";
+            else ans += "N,";
+            if(t) q.push(t -> left);
+            if(t) q.push(t -> right);
+        }
+        return ans;
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        // cout << data << " ";
+        if(data == "N,") return NULL;
+        queue<TreeNode*> q;
+        string num = "";
+        int i = 0;
+        while(data[i] != ',') i++;
+        TreeNode* root = new TreeNode(stoi(data.substr(0, i)));
+        // cout << root -> val << " ";
+        i++;
         q.push(root);
         while(q.size()) {
             auto t = q.front();
             q.pop();
-            if(t) s += to_string(t -> val) + ",";
-            else s += "#,";
-            if(t) q.push(t -> left);
-            if(t) q.push(t -> right);
-        }
-        cout << s << " ";
-        return s;
-    }
+            int j = i;
+            while(data[j] != ',') j++;
 
-    // Decodes your encoded data to tree.
-    TreeNode* deserialize(string s) {
-        if(s[0] == '#') return NULL;
-        vector<TreeNode*> ans;
-        int n = s.size();
-        int j = 0;
-        for(int i = 0; i < n; i++) {
-            if(s[i] == ',') {
-                string sub = s.substr(j, i - j);
-                j = i + 1;
-                if(sub != "#") ans.push_back(new TreeNode(stoi(sub)));
-                else ans.push_back(NULL);
+            string a = data.substr(i , j - i);
+            // cout << a << " ";
+            if(a != "N") {
+                // cout << a << " ";
+                t -> left = new TreeNode(stoi(a));
             }
-        }
-        queue<TreeNode*> q;
-        q.push(ans[0]);
-        int i = 1;
-        while(q.size() && i < ans.size()) {
-            auto t = q.front();
-            q.pop();
-            t -> left = ans[i];
-            i++;
-            if(i >= ans.size()) break;
-            t -> right = ans[i];
-            i++;
+            else t -> left = NULL;
+            i = j + 1;
+            j++;
+            while(data[j] != ',') j++;
+            a = data.substr(i, j - i);
+            // cout << 1 << a << " ";
+            if(a != "N") t -> right = new TreeNode(stoi(a));
+            else t -> right = NULL;
+            i = j + 1;
             if(t -> left) q.push(t -> left);
             if(t -> right) q.push(t -> right);
         }
-        return ans[0];
+        return root;
     }
 };
 
