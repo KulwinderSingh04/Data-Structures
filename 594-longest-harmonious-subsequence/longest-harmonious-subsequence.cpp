@@ -9,7 +9,7 @@ public:
         unordered_map<int, int> m;
         while(j < n) {
             m[nums[j]]++;
-            cout << j << " ";
+            // cout << j << " ";
             while(nums[j] - nums[i] > 1) {
                 m[nums[i]]--;
                 if(m[nums[i]] == 0) m.erase(nums[i]);
