@@ -1,26 +1,26 @@
 class Solution {
 public:
-    int findLHS(vector<int>& nums) {
-        sort(nums.begin(), nums.end());
-        int i = 0;
-        int j = 0;
-        int ans = 0;
+    int binSearch(vector<int>& nums, int target) {
+        int lo = 0;
         int n = nums.size();
-        unordered_map<int, int> m;
-        while(j < n) {
-            m[nums[j]]++;
-            // cout << j << " ";
-            while(nums[j] - nums[i] > 1) {
-                m[nums[i]]--;
-                if(m[nums[i]] == 0) m.erase(nums[i]);
-                i++;
+        int hi = n - 1;
+        while(lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if(nums[mid] == target && (mid == n - 1 || nums[mid] != nums[mid + 1])) return mid;
+            else if(nums[mid] > target) hi = mid - 1;
+            else lo = mid + 1;
+        }
+        return -1;
+    }
+    int findLHS(vector<int>& nums) {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        int ans = 0;
+        for(int i = 0; i < n; i++) {
+            int idx = binSearch(nums, nums[i] + 1);
+            if(idx != -1) {
+                ans = max(ans, idx - i + 1);
             }
-            // cout << i << " " << j << " " << m.size() <<endl;
-            if(m.size() > 1) {
-                ans = max(ans, j - i + 1);
-            }
-            // cout << j << " ";
-            j++;
         }
         return ans;
     }
