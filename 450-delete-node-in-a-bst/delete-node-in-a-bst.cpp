@@ -11,7 +11,7 @@
  */
 class Solution {
 public:
-    TreeNode* fun(TreeNode* root, int key) {
+    TreeNode* deleteNode(TreeNode* root, int key) {
         if(root == NULL) return NULL;
         if(root -> val == key) {
             if(root -> left == NULL && root -> right == NULL) return NULL;
@@ -24,11 +24,8 @@ public:
                 swap(pred -> val, root -> val);
             }
         }
-        root -> left = fun(root -> left, key);
-        root -> right = fun(root -> right, key);
+        root -> left = deleteNode(root -> left, key);
+        root -> right = deleteNode(root -> right, key);
         return root;
-    }
-    TreeNode* deleteNode(TreeNode* root, int key) {
-        return fun(root, key);
     }
 };
