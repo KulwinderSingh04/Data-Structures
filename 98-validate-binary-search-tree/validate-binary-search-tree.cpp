@@ -11,14 +11,20 @@
  */
 class Solution {
 public:
-    bool fun(TreeNode* root, long long mn, long long mx) {
-        if(root == NULL) return true;
-        if(!(root -> val < mx && root -> val > mn)) return false;
-        bool a = fun(root -> left, mn, root -> val);
-        bool b = fun(root -> right, root -> val, mx);
-        return a && b;
+    void fun(TreeNode*& prev, TreeNode* root, bool& ans) {
+        if(root == NULL) return;
+        fun(prev, root -> left, ans);
+        if(prev && prev -> val >= root -> val) {
+            ans = false;
+        }
+        prev = root;
+        fun(prev, root -> right, ans);
+
     }
     bool isValidBST(TreeNode* root) {
-        return fun(root, LLONG_MIN, LLONG_MAX);
+        bool ans = true;
+        TreeNode* prev = NULL;
+        fun(prev, root, ans);
+        return ans;
     }
 };
