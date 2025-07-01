@@ -11,19 +11,18 @@
  */
 class Solution {
 public:
-    TreeNode* fun(vector<int>& v, int lo, int hi) {
+    TreeNode* fun(vector<int>& pre, int lo, int hi) {
         if(lo > hi) return NULL;
-        if(lo == hi) return new TreeNode(v[lo]);
-        TreeNode* root = new TreeNode(v[lo]);
-        int idx = hi + 1;
+        TreeNode* root = new TreeNode(pre[lo]);
+        int idx = hi;
         for(int i = lo + 1; i <= hi; i++) {
-            if(v[i] > v[lo]) {
-                idx = i;
+            if(pre[i] > pre[lo]) {
+                idx = i - 1;
                 break;
             }
         }
-        root -> left = fun(v, lo + 1, idx - 1);
-        root -> right = fun(v, idx, hi);
+        root -> left = fun(pre, lo + 1, idx);
+        root -> right = fun(pre, idx + 1, hi);
         return root;
     }
     TreeNode* bstFromPreorder(vector<int>& preorder) {
