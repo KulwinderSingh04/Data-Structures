@@ -22,6 +22,8 @@ public:
                 TreeNode* pred = root -> left;
                 while(pred -> right) pred = pred -> right;
                 swap(pred -> val, root -> val);
+                root -> left = deleteNode(root -> left, key);
+                return root;
             }
         }
         root -> left = deleteNode(root -> left, key);
