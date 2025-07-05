@@ -41,7 +41,6 @@ public:
                     r -> neighbors.push_back(nodeRegister[x -> val]);
                     
                 }
-                if(st.find(x) != st.end()) continue;
                 else {
                     Node* newNode = new Node(x -> val);
                     r -> neighbors.push_back(newNode);
