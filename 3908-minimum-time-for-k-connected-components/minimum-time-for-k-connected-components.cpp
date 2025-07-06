@@ -37,7 +37,7 @@ public:
         sort(edges.begin(), edges.end(), cmp);
         vector<int> par(n), rank(n);
         int ans = n;
-        if(fun(n, edges) == k) return 0;
+        // if(fun(n, edges) == k) return 0;
         for(int i = 0; i < n; i++) par[i] = i;
         for(int i = 0; i < edges.size(); i++) {
             if(find(edges[i][0], par) != find(edges[i][1], par)) {
