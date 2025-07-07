@@ -7,7 +7,7 @@ public:
         int i = 0;
         int count = 0;
         int n = events.size();
-        for(int d = 1; d < 1e5 + 1; d++) {
+        for(int d = events[0][0]; d < 1e5 + 1; d++) {
             while(i < n && events[i][0] == d) {
                 pq.push({events[i][1], events[i][0]});
                 i++;
