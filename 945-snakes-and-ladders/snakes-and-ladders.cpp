@@ -1,61 +1,44 @@
 class Solution {
 public:
-    // int fun(int goti, vector<vector<int>>& board, vector<int>& vis) {
-    //     // if(goti > n * n) return 0;
-    //     int n = board.size();
-    //     if(goti >= n * n) return 0;
-    //     // if(vis[goti] == 1) return 1e9;
-    //     // vis[goti] = 1;
-    //     if(board[r][c] == -1) {
-    //         int mn = INT_MAX;
-    //         for(int i = 1; i <= 6; i++) {
-    //             mn = min(mn, 1 + fun(goti + i, board, vis));
-    //         }
-    //         return mn;
-    //     } else {
-    //         int newGoti = board[r][c];
-    //         board[r][c] =
-    //         int t = fun(newGoti, board, vis);
-    //         board[r][c] = newGoti;
-    //         return t;
-    //     }
-    // }
-    vector<int> cord(int goti, int n) {
-        int r = (goti - 1) / n;
-        r = n - 1 - r;
-        int c = (goti - 1) % n;
-        if((n - 1 - r) % 2 == 1) c = n - 1 - c;
+    pair<int, int> cord(int t, int n) {
+        int a = t % n ? t / n : t / n - 1;
+        int r = n - 1 - a;
+        int c = 0;
+        if(a % 2 == 0) c = (t % n ? t % n - 1 : n - 1);
+        else c = (t % n ? n - t % n : 0);
         return {r, c};
     }
     int snakesAndLadders(vector<vector<int>>& board) {
         int n = board.size();
-        vector<vector<int>> vis(n, vector<int> (n));
         queue<pair<int, int>> q;
-        q.push({0, 1});
-        vis[n - 1][0] = true;
+        q.push({1, 0});
+        vector<int> vis(n * n + 1);
+        vis[1] = 1;
         while(q.size()) {
-            auto t = q.front();
+            auto t = q.front().first;
+            int moves = q.front().second;
             q.pop();
-
-            int move = t.first;
-            int goti = t.second;
-            if(goti == n * n) return move;
-            
-            for(int i = 1; i < 7; i++) {
-                int val = goti + i;
-                if(val > n * n) continue;
-                vector<int> v = cord(val, n);
-                int r = v[0];
-                int c = v[1];
-                if(vis[r][c] == 1) continue;
-                vis[r][c] = 1;
-                if(board[r][c] == -1) {
-                    q.push({move + 1, val});
+            int r = cord(t, n).first;
+            int c = cord(t, n).second;
+            if(t == n * n) return moves;
+            for(int i = t + 1; i < min(n *n + 1, t + 7); i++) {
+                int nr = cord(i, n).first;
+                int nc = cord(i, n).second;
+                if(board[nr][nc] == -1) {
+                    if(vis[i] == 0) {
+                        vis[i] = 1;
+                        q.push({i, moves + 1});
+                    }
                 } else {
-                    q.push({move + 1, board[r][c]});
+                    if(vis[i] == 0) {
+                        vis[i] == 1;
+                    }
+                    if(vis[board[nr][nc]] == 0) {
+                        vis[board[nr][nc]] = 1;
+                        q.push({board[nr][nc], moves + 1});
+                    }
                 }
             }
-            
         }
         return -1;
     }
