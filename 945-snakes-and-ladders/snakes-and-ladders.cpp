@@ -30,9 +30,9 @@ public:
                         q.push({i, moves + 1});
                     }
                 } else {
-                    if(vis[i] == 0) {
-                        vis[i] == 1;
-                    }
+                    // if(vis[i] == 0) {
+                    //     vis[i] == 1;
+                    // }
                     if(vis[board[nr][nc]] == 0) {
                         vis[board[nr][nc]] = 1;
                         q.push({board[nr][nc], moves + 1});
