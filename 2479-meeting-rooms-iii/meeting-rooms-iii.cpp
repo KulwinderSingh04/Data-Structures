@@ -8,28 +8,27 @@ public:
         for(int i = 0; i < n; i++) roomHeap.push(i);
         sort(meetings.begin(), meetings.end());
         for(int i = 0; i < meetings.size(); i++) {
-            while(endTimeHeap.size() && endTimeHeap.top().first <= meetings[i][0]) {
-                // cout << endTimeHeap.top().second << " ";
-                roomHeap.push(endTimeHeap.top().second);
-                endTimeHeap.pop();
-            }
             if(roomHeap.size()) {
-                int room = roomHeap.top();
+                endTimeHeap.push({meetings[i][1], roomHeap.top()});
+                rooms[roomHeap.top()]++;
                 roomHeap.pop();
-                rooms[room]++;
-                endTimeHeap.push({meetings[i][1], room});
             } else {
                 auto t = endTimeHeap.top();
                 endTimeHeap.pop();
                 long long roomAvailable = t.second;
                 long long meetFinish = t.first;
                 rooms[roomAvailable]++;
-                long long duration = 1LL * meetings[i][1] - meetings[i][0];
-                endTimeHeap.push({meetFinish + duration, roomAvailable});
+                if(meetings[i][0] < meetFinish) endTimeHeap.push({1LL * meetings[i][1] + (meetFinish - meetings[i][0]), roomAvailable});
+                else endTimeHeap.push({meetings[i][1], roomAvailable});
             }
             // cout << i << endl;
+            while(i < meetings.size() - 1 && endTimeHeap.size() && endTimeHeap.top().first <= meetings[i + 1][0]) {
+                // cout << endTimeHeap.top().second << " ";
+                roomHeap.push(endTimeHeap.top().second);
+                endTimeHeap.pop();
+            }
         }
-        long long ans = 0;
+        int ans = 0;
         for(int i = 0; i < n; i++) if(rooms[i] > rooms[ans]) ans = i;
         return ans;
     }
