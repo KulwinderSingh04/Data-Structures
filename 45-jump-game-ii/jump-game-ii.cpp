@@ -1,21 +1,23 @@
 class Solution {
 public:
     int jump(vector<int>& nums) {
-        int n = nums.size();
-        if(n == 1) return 0;
+        int sz = nums.size();
         int i = 0;
-        int l = 0;
-        int r = 0;
-        int count = 0;
-        while(r < n - 1) {
-            int f = 0;
-            for(int j = l; j <= r; j++) {
-                f = max(f, j + nums[j]);
+        int ans = 0;
+        while(i < sz - 1) {
+            int dis = i;
+            int idx = i;
+            if(i + nums[i] >= sz - 1) return ans + 1;
+            for(int j = i + 1; j < min(sz, i + nums[i] + 1); j++) {
+                if(j + nums[j] > dis) {
+                    idx = j;
+                    dis = j + nums[j]; 
+                }
             }
-            l = r + 1;
-            r = f;
-            count++;
+            if(dis == i) return -1;
+            i = idx;
+            ans++;
         }
-        return count;
+        return ans;
     }
 };
