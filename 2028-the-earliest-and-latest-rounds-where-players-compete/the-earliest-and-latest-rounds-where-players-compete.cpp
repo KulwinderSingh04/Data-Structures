@@ -1,79 +1,41 @@
-class Solution 
-{
+class Solution {
 public:
-    pair<int, int> dfs(int n, int p1, int p2) 
-    {
-        // Step 1: Base case — they meet
-        if (p1 + p2 == n + 1) 
-        {
-            return {1, 1};
+    vector<int> earliestAndLatest(int n, int left, int right) {
+        if(left + right == n + 1) return {1, 1};
+        if(left > n - right + 1) {
+            int temp = n + 1 - left;
+            left = n - right + 1;
+            right = temp;
         }
 
-        // Step 2: Normalize
-        if (p1 > p2) 
-        {
-            swap(p1, p2);
-        }
-        
-        if (n <= 4) 
-        {
-            return {2, 2};
-        }
-
-        int m = (n + 1) / 2;
-        int minR = INT_MAX;
-        int maxR = INT_MIN;
-
-        // Step 3: Use symmetry to reduce state space
-        if (p1 - 1 > n - p2) 
-        {
-            int t = n + 1 - p1;
-            p1 = n + 1 - p2;
-            p2 = t;
-        }
-
-        // Step 4: Simulate all scenarios
-        if (p2 * 2 <= n + 1) 
-        {
-            int a = p1 - 1;
-            int b = p2 - p1 - 1;
-
-            for (int i = 0; i <= a; ++i) 
-            {
-                for (int j = 0; j <= b; ++j) 
-                {
-                    auto [r1, r2] = dfs(m, i + 1, i + j + 2);
-                    minR = min(minR, r1 + 1);
-                    maxR = max(maxR, r2 + 1);
+        int mn = n;
+        int mx = 0;
+        int nextCount = (n + 1) / 2;
+        if(right <= nextCount) {
+            for(int surLeft = 0; surLeft < left; surLeft++) {
+                for(int surMid = 0; surMid < right - left; surMid++) {
+                    int nextLeft = surLeft + 1;
+                    int nextRight =nextLeft + surMid + 1;
+                    auto t = earliestAndLatest(nextCount, nextLeft, nextRight);
+                    mn = min(mn, t[0] + 1);
+                    mx = max(mx, t[1] + 1);
                 }
             }
-        } 
-        else 
-        {
-            int p4 = n + 1 - p2;
-            int a = p1 - 1;
-            int b = p4 - p1 - 1;
-            int c = p2 - p4 - 1;
-
-            for (int i = 0; i <= a; ++i) 
-            {
-                for (int j = 0; j <= b; ++j) 
-                {
-                    int offset = i + j + 1 + (c + 1) / 2 + 1;
-                    auto [r1, r2] = dfs(m, i + 1, offset);
-                    minR = min(minR, r1 + 1);
-                    maxR = max(maxR, r2 + 1);
+        } else {
+            int fightsRight = n - right + 1;
+            int countLeft = left - 1;
+            int midCount = fightsRight - left - 1;
+            int remMidCount = right - fightsRight - 1;
+            for(int surLeft = 0; surLeft <= countLeft; surLeft++) {
+                for(int surMid = 0; surMid <= midCount; surMid++) {
+                    int nextLeft = surLeft + 1;
+                    int nextRight = nextLeft + surMid + 1 + (remMidCount + 1) / 2;
+                    auto t = earliestAndLatest(nextCount, nextLeft, nextRight);
+                    mn = min(mn, t[0] + 1);
+                    mx = max(mx, t[1] + 1);
                 }
             }
         }
-
-        // Step 5: Return earliest and latest round
-        return {minR, maxR};
-    }
-
-    vector<int> earliestAndLatest(int n, int firstPlayer, int secondPlayer) 
-    {
-        auto [earliest, latest] = dfs(n, firstPlayer, secondPlayer);
-        return {earliest, latest};
+        return {mn, mx};
     }
 };
