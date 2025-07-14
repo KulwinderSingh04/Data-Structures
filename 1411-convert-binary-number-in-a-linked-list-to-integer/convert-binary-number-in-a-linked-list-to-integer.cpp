@@ -10,19 +10,15 @@
  */
 class Solution {
 public:
+    void fun(ListNode* head, int& i, int& ans) {
+        if(head == NULL) return;
+        fun(head -> next, i, ans);
+        ans += head -> val * pow(2, i);
+        i++;
+    }
     int getDecimalValue(ListNode* head) {
-        string s = "";
-        ListNode* temp = head;
-        while(temp) {
-            s.push_back(temp -> val + 48);
-            temp = temp -> next;
-        }
-        int ans = 0;
-        int n = s.size();
-        for(int i = 0; i < n; i++) {
-            int num = s[i] - 48;
-            ans += num * pow(2, n - 1 - i);
-        }
+        int i = 0, ans = 0;
+        fun(head, i, ans);
         return ans;
     }
 };
