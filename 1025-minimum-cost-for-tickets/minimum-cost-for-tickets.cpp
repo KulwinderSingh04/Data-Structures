@@ -7,9 +7,9 @@ public:
         int res = INT_MAX;
         for(int j = 0; j < 3; j++) {
             int idx;
-            if(j == 0) idx = lower_bound(days.begin(), days.end(), days[i] + 1) - days.begin();
-            else if(j == 1) idx = lower_bound(days.begin(), days.end(), days[i] + 7) - days.begin();
-            else  idx = lower_bound(days.begin(), days.end(), days[i] + 30) - days.begin();
+            if(j == 0) idx = lower_bound(days.begin() + i, days.end(), days[i] + 1) - days.begin();
+            else if(j == 1) idx = lower_bound(days.begin() + i, days.end(), days[i] + 7) - days.begin();
+            else  idx = lower_bound(days.begin() + i, days.end(), days[i] + 30) - days.begin();
             // cout << idx << " ";
             res = min(res, costs[j] + fun(idx, days, costs, dp));
         }
