@@ -10,7 +10,7 @@ public:
             if(j == 0) idx = lower_bound(days.begin(), days.end(), days[i] + 1) - days.begin();
             else if(j == 1) idx = lower_bound(days.begin(), days.end(), days[i] + 7) - days.begin();
             else  idx = lower_bound(days.begin(), days.end(), days[i] + 30) - days.begin();
-            cout << idx << " ";
+            // cout << idx << " ";
             res = min(res, costs[j] + fun(idx, days, costs, dp));
         }
         return dp[i] = res;
