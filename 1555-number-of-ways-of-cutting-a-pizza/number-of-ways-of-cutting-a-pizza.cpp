@@ -4,7 +4,7 @@ public:
     int fun(int r, int c, int k, vector<vector<int>>& pizza, vector<vector<vector<int>>>& dp) {
         int n = pizza.size();
         int m = pizza[0].size();
-        if(pizza[r][c] < k) return 0;
+        // if(pizza[r][c] < k) return 0;
         if(k == 1) return pizza[r][c] >= 1;
         if(dp[r][c][k] != -1) return dp[r][c][k];
         long long ans = 0;
