@@ -12,8 +12,7 @@ public:
             j++;
             i++;
         }
-        cout << i << " ";
-        if(i == 0 || s.substr(0, i) == "abc") return true;
+        if(s.substr(0, i) == "abc") return true;
         return false;
     }
 };
