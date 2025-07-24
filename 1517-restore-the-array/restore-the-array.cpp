@@ -6,14 +6,11 @@ public:
         if(idx == n) return 1;
         if(dp[idx] != -1) return dp[idx];
         long long res = 0;
+        long long num = 0;
         for(int i = idx; i < n; i++) {
-            if(i + 1 < n && s[i + 1] == '0') continue;
-            long long num = 0;
-            for(int j = idx; j <= i; j++) {
-                if(num > k) break;
-                num = num * 10 + (s[j] - 48);
-            }
+            num = num * 10 + (s[i] - 48);
             if(num > k) break;
+            if(i + 1 < n && s[i + 1] == '0') continue;
             if(num >= 1 && num <= k) {
                 res += fun(i + 1, s, k, dp);
                 res %= MOD;
