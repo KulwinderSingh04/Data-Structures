@@ -1,31 +1,23 @@
 class Solution {
 public:
-    int fun(vector<int>& cuts, int i, int j, vector<vector<int>>& dp) {
+    int fun(int i, int j, vector<int>& cuts, vector<vector<int>>& dp) {
+        int n = cuts.size();
         if(i > j) return 0;
         if(dp[i][j] != -1) return dp[i][j];
-        int mn = INT_MAX;
+        int mx = INT_MAX;
         for(int k = i; k <= j; k++) {
-            int steps = cuts[j + 1] - cuts[i - 1] + fun(cuts, i, k - 1, dp) + fun(cuts, k + 1, j, dp);
-            mn = min(mn, steps);
+            int left = fun(i, k - 1, cuts, dp);
+            int right = fun(k + 1, j, cuts, dp);
+            mx = min(mx, cuts[j + 1] - cuts[i - 1] + left + right);
         }
-        return dp[i][j] = mn;
+        return dp[i][j] = mx;
     }
     int minCost(int n, vector<int>& cuts) {
         cuts.push_back(0);
         cuts.push_back(n);
         sort(cuts.begin(), cuts.end());
-        int t = cuts.size();
-        vector<vector<int>> dp(t, vector<int> (t, 0));
-        for(int i = t - 2; i >= 1; i--) {
-            for(int j = i; j < t - 1; j++) {
-                int mn = INT_MAX;
-                for(int k = i; k <= j; k++) {
-                    int steps = cuts[j + 1] - cuts[i - 1] + dp[i][k - 1] + dp[k + 1][j];
-                    mn = min(mn, steps);
-                }
-                dp[i][j] = mn;
-            }
-        }
-        return dp[1][t - 2];
+        int n1 = cuts.size();
+        vector<vector<int>> dp(n1, vector<int> (n1, -1));
+        return fun(1, n1 - 2, cuts, dp);
     }
 };
