@@ -7,14 +7,10 @@ public:
         for(int i = 0; i < n; i++) {
             for(int j = 0; j < i; j++) {
                 int diff = nums[i] - nums[j];
-                if(dp[j].find(diff) != dp[i].end()) {
-                    dp[i][diff] = max(dp[i][diff], 1 + dp[j][diff]);
-                } else {
-                    dp[i][diff] = max(dp[i][diff], 2);
-                }
+                dp[i][diff] = max(dp[i][diff], 1 + dp[j][diff]);
                 ans = max(dp[i][diff], ans);
             }
         }
-        return ans;
+        return ans + 1;
     }
 };
