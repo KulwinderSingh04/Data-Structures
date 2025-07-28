@@ -4,7 +4,7 @@ public:
         int n = nums.size();
         if(i == n) return bitOr == mx;
         string str = to_string(i) + '_' + to_string(bitOr);
-        // if(dp.find(Str) != dp.end()) return dp[str];
+        if(dp.find(str) != dp.end()) return dp[str];
         int p = fun(i + 1, bitOr | nums[i], mx,  nums, dp);
         int np = fun(i + 1, bitOr, mx, nums, dp);
         return dp[str] = np + p; 
