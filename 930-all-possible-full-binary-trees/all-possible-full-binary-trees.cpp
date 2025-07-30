@@ -11,12 +11,13 @@
  */
 class Solution {
 public:
-    vector<TreeNode*> fun(int n, vector<vector<TreeNode*>>& dp) {
+    vector<TreeNode*> fun(int n, unordered_map<int,vector<TreeNode*>>& dp) {
         if(n % 2 == 0) return {};
         if(n == 1) {
             TreeNode* root = new TreeNode(0);
             return {root};
         }
+        if(dp.find(n) != dp.end()) return dp[n]; 
         vector<TreeNode*> ans;
         for(int i = 1; i < n; i += 2) {
             auto l = fun(i, dp);
@@ -30,10 +31,10 @@ public:
                 }
             }
         }
-        return ans;
+        return dp[n] = ans;
     }
     vector<TreeNode*> allPossibleFBT(int n) {
-        vector<vector<TreeNode*>> dp(n + 1);
+        unordered_map<int, vector<TreeNode*>> dp;
         return fun(n, dp);
     }
 };
