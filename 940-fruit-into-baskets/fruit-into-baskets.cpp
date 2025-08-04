@@ -2,10 +2,11 @@ class Solution {
 public:
     int totalFruit(vector<int>& fruits) {
         int n = fruits.size();
-        vector<int> hash(n);
         int i = 0;
         int j = 0;
-        int count = 0, ans = 0;
+        int ans = 0;
+        int count = 0;
+        vector<int> hash(n);
         while(j < n) {
             if(hash[fruits[j]] == 0) count++;
             hash[fruits[j]]++;
@@ -14,7 +15,7 @@ public:
                 if(hash[fruits[i]] == 0) count--;
                 i++;
             }
-            ans = max(ans, j - i + 1);
+            ans = max(j - i + 1, ans);
             j++;
         }
         return ans;
