@@ -11,15 +11,16 @@
  */
 class Solution {
 public:
-    vector<TreeNode*> fun(int l, int r, vector<int>& arr) {
+    vector<TreeNode*> fun(int l, int r, vector<int>& arr, unordered_map<string, vector<TreeNode*>>& dp) {
         if(l > r) return {NULL};
-        // if(l == r) return new TreeNode(arr[l]);
+        if(l == r) return {new TreeNode(arr[l])};
+        string str = to_string(l) + "_" + to_string(r);
+        if(dp.find(str) != dp.end()) return dp[str];
         vector<TreeNode*> ans;
         for(int i = l; i <= r; i++) {
-            // TreeNode* root = new TreeNode(arr[i]);
 
-            vector<TreeNode*> left = fun(l, i - 1, arr);
-            vector<TreeNode*> right = fun(i + 1, r, arr);
+            vector<TreeNode*> left = fun(l, i - 1, arr, dp);
+            vector<TreeNode*> right = fun(i + 1, r, arr, dp);
             for(auto x : left) {
                 for(auto y : right) {
                     TreeNode* node = new TreeNode(arr[i]);
@@ -29,11 +30,12 @@ public:
                 }
             }
         }
-        return ans;
+        return dp[str] = ans;
     }
     vector<TreeNode*> generateTrees(int n) {
         vector<int> arr(n);
         for(int i = 0; i < n; i++) arr[i] = i + 1;
-        return fun(0, n - 1, arr);
+        unordered_map<string, vector<TreeNode*>> dp;
+        return fun(0, n - 1, arr, dp);
     }
 };
