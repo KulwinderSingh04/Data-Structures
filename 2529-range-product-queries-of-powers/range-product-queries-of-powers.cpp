@@ -14,13 +14,13 @@ public:
     }
 
     int query(int i, int l, int r, int left, int right, vector<long long>& segTree) {
-        if(l == r) return segTree[i];
+        if(right < l || left > r) return 1;
         if(left <= l && right >= r) return segTree[i];
         int mid = l + (r - l) / 2;
         long long a = 1, b = 1;
-        if(left <= mid) a = query(2 * i + 1, l, mid, left, right, segTree);
-        if(right > mid) b = query(2 * i + 2, mid + 1, r, left, right, segTree);
-        return (a % MOD * b % MOD) % MOD;
+        a = query(2 * i + 1, l, mid, left, right, segTree);
+        b = query(2 * i + 2, mid + 1, r, left, right, segTree);
+        return (a % MOD * (b % MOD)) % MOD;
     }
     vector<int> productQueries(int n, vector<vector<int>>& queries) {
         vector<int> powers;
