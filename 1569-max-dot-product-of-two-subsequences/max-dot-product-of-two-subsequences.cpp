@@ -17,9 +17,8 @@ public:
         if(i2 == nums2.size()) return 0;
         if(dp[i1][i2] != -1) return dp[i1][i2];
         int res = INT_MIN;
-        for(int j = i2; j < nums2.size(); j++) {
-            res = max(res, nums1[i1] * nums2[j] + fun(i1 + 1, j + 1, nums1, nums2, dp));
-        }
+        res = max(res, nums1[i1] * nums2[i2] + fun(i1 + 1, i2 + 1, nums1, nums2, dp));
+        res = max(res, fun(i1, i2 + 1, nums1, nums2, dp));
         res = max(res, fun(i1 + 1, i2, nums1, nums2, dp));
         return dp[i1][i2] = res;
     }
