@@ -9,13 +9,12 @@ public:
     }
     int fun(int idx, int n, int x, vector<vector<int>>& dp) {
         if(n == 0) return 1;
+        if(idx > n) return 0;
         if(n < 0) return 0;
         if(dp[idx][n] != -1) return dp[idx][n];
         int res = 0;
-        for(int i = idx; pow(i, x) <= n; i++) {
-            res += fun(i + 1, n - pow(i, x), x, dp);
-            res %= MOD;
-        }
+        res += fun(idx + 1, n - pow(idx, x), x, dp);
+        res += fun(idx + 1, n, x, dp);
         return dp[idx][n] = res % MOD;
     }
     int numberOfWays(int n, int x) {
