@@ -16,13 +16,11 @@ public:
         vector<vector<int>> dp(n + 1, vector<int> (k + 1, 0));
         for(int i = 0; i <= n; i++) dp[i][0] = 1;
         for(int i = 1; i <= n; i++) {
+            long long cum = dp[i - 1][0];
             for(int j = 1; j <= k; j++) {
-                long long res = 0;
-                for(int inv = 0; inv <= min(j, i - 1); inv++) {
-                    res += dp[i - 1][j - inv];
-                    res %= MOD;
-                }
-                dp[i][j] = res;
+                cum += dp[i - 1][j];
+                if(j >= i) cum -= dp[i - 1][j - i];
+                dp[i][j] = cum % MOD;
             }
         }
         return dp[n][k];
