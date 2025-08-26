@@ -28,10 +28,10 @@ public:
             minSteps[i][j] = v[x][y];
         }
     }
-    int solve(int i, vector<vector<int>>& pos, bool alice, int mask, vector<vector<int>>& minSteps, vector<vector<vector<int>>>& dp) {
+    int solve(int i, vector<vector<int>>& pos, bool alice, int mask, vector<vector<int>>& minSteps, vector<vector<int>>& dp) {
         int n = pos.size();
         if(mask == ((1 << n) - 1)) return 0;
-        if(dp[i][alice][mask] != -1) return dp[i][alice][mask];
+        if(dp[i][mask] != -1) return dp[i][mask];
         int res;
         if(alice) res = 0;
         else res = 1e8;
@@ -43,7 +43,7 @@ public:
                 res = min(res, minSteps[i][j] + solve(j, pos, !alice, mask | (1 << j), minSteps, dp));
             }
         }
-        return dp[i][alice][mask] = res;
+        return dp[i][mask] = res;
     }
     int maxMoves(int kx, int ky, vector<vector<int>>& positions) {
         positions.insert(positions.begin(), {kx, ky});
@@ -52,7 +52,7 @@ public:
         for(int i = 0; i < n; i++) {
             bfs(i, minSteps, positions);
         }
-        vector<vector<vector<int>>> dp(n, vector<vector<int>> (2, vector<int> (1 << 16, -1)));
+        vector<vector<int>> dp(n, vector<int> (1 << 16, -1));
         return solve(0, positions, true, 1, minSteps, dp);
     }
 };
