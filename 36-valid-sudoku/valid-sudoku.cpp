@@ -3,11 +3,9 @@ public:
     bool isSafe(int r, int c, vector<vector<char>>& board) {
         for(int i = 0; i < 9; i++) {
             if(i != r && board[i][c] == board[r][c]) {
-                // cout << i << " " << c << endl;
                 return false;
             }
             if(i != c && board[r][i] == board[r][c]) {
-                // cout << c << " " << i << endl;
                 return false;
             }
         }
@@ -27,7 +25,6 @@ public:
             for(int j = 0; j < 9; j++) {
                 if(board[i][j] == '.') continue;
                 if(!isSafe(i, j, board)) {
-                    cout << i << " " << j << endl;
                     return false;
                 }
             }
