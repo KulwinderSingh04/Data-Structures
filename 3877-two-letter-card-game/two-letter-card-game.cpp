@@ -24,7 +24,7 @@ public:
         int tot = leftc1 + leftc2;;
         int ans = l + y + min(c0, tot);
         c0 -= min(c0, tot);
-        ans += min((l + y) / 2, c0 / 2);
+        ans += min((l + y), c0 / 2);
         return ans;
     }
 };
