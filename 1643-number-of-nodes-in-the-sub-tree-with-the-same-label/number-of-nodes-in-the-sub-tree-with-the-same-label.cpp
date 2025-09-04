@@ -1,19 +1,16 @@
 class Solution {
 public:
-    vector<int> fun(int node, int par, vector<vector<int>>& adj, unordered_map<int, char>& mp, vector<int>& v) {
+    void fun(int node, int par, vector<vector<int>>& adj, unordered_map<int, char>& mp, vector<int>& v, vector<int>& ans) {
         int n = adj.size();
-        vector<int> ans(26);
+        int before = v[mp[node] - 97];
         for(auto x : adj[node]) {
             if(x != par) {
-                vector<int> a = fun(x, node, adj, mp, v);
-                for(int i = 0; i < 26; i++) {
-                    ans[i] += a[i];
-                }
+                fun(x, node, adj, mp, v, ans);
             }
         }
-        ans[mp[node] - 97]++;
-        v[node] = ans[mp[node] - 97];
-        return ans;
+        v[mp[node] - 97]++;
+        int after = v[mp[node] - 97];
+        ans[node] = after - before;
     }
     vector<int> countSubTrees(int n, vector<vector<int>>& edges, string labels) {
         unordered_map<int, char> mp;
@@ -23,8 +20,8 @@ public:
             adj[x[0]].push_back(x[1]);
             adj[x[1]].push_back(x[0]);
         }
-        vector<int> ans(n);
-        fun(0, -1, adj, mp, ans);
+        vector<int> ans(n), v(26);
+        fun(0, -1, adj, mp, v, ans);
         return ans;
     }
 };
