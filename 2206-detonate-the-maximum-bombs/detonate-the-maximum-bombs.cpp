@@ -23,9 +23,6 @@ public:
                 if(dis <= bombs[i][2]) {
                     adj[i].push_back(j);
                 }
-                if(dis <= bombs[j][2]) {
-                    adj[j].push_back(i);
-                }
             }
         }
         int ans = 0;
