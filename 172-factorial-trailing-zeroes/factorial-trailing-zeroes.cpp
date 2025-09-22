@@ -15,7 +15,17 @@ public:
     }
     int trailingZeroes(int n) {
         int a = 0, b = 0;
-        fun(n, a, b);
+        for(int i = 1; i <= n; i++) {
+            int t = i;
+            while(t % 5 == 0) {
+                a++;
+                t /= 5;
+            }
+            while(t % 2 == 0) {
+                b++;
+                t /= 2;
+            }
+        }
         return min(a, b);
     }
 };
