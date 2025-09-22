@@ -28,7 +28,6 @@ public:
         }
         vector<int> v1 = topoSort(indegree, adj);
         if(v1.size() != n) return {};
-        // for(int i = 0; i < n; i++) cout << v1[i] << " ";
         unordered_map<int, int> mp;
         int t = m;
         for(int i = 0; i < n; i++) {
@@ -36,7 +35,6 @@ public:
                 mp[i] = t++;
             } else mp[i] = group[i];
         }
-        for(auto x : mp) cout << x.first << " " << x.second << endl;
         vector<int> indegree2(t);
         vector<vector<int>> adj2(t);
         set<vector<int>> st;
@@ -53,7 +51,6 @@ public:
         }
         vector<int> v2 = topoSort(indegree2, adj2);
         if(v2.size() != t) return {};
-        for(int i = 0; i < t; i++) cout << v2[i] << " ";
         unordered_map<int, vector<int>> grpMap;
         for(int i = 0; i < n; i++) {
             int g = mp[v1[i]];
