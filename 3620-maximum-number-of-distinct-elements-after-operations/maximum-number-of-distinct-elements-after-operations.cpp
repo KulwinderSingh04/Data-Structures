@@ -3,9 +3,6 @@ public:
     int maxDistinctElements(vector<int>& nums, int k) {
         int n = nums.size();
         sort(nums.begin(), nums.end());
-        int count = 1; 
-        for(int i = 1; i < n; i++) if(nums[i] != nums[i - 1]) count++;
-        if(k == 0) return count;
         int a = nums[0] - k;
         int ans = 0;
         unordered_set<int> st;
