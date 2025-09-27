@@ -20,6 +20,7 @@ public:
                 count++;
                 i++;
             }
+            if(count > (tot / 2)) break;
         }
         if(i == n) {
             while(j < m) {
@@ -27,13 +28,16 @@ public:
                 if(count == (tot / 2)) b = nums2[j];
                 count++;
                 j++;
+                if(count > (tot / 2)) break;
             }
+            
         } else {
             while(i < n) {
                 if(count == (tot / 2 - 1)) a = nums1[i];
                 if(count == (tot / 2)) b = nums1[i];
                 count++;
                 i++;
+                if(count > (tot / 2)) break;
             }
         }
         return tot % 2 ? b : (a + b) / 2.0;
