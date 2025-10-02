@@ -19,7 +19,6 @@ public:
         for(int i = 0; i < n; i++) par[i] = i;
         unordered_set<int> parSet;
         for(int i = 0; i < n; i++) {
-            cout << i << " ";
             if(parSet.find(leftChild[i]) != parSet.end() || parSet.find(rightChild[i]) != parSet.end()) return false;
             if(leftChild[i] != -1) {
                 if(find(i, par) != find(leftChild[i], par)) {
@@ -38,7 +37,6 @@ public:
 
         
         for(int i = 0; i < n; i++) if(par[i] == i) count++;
-        cout << count;
         return count == 1;
     }
 };
