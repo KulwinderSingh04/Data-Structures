@@ -1,42 +1,43 @@
 class Solution {
 public:
-    int find(int x, vector<int>& par) {
-        if(x == par[x]) return x;
-        return par[x] = find(par[x], par);
-    }
-    void Union(int x, int y, vector<int>& par, vector<int>& rank) {
-        x = find(x, par);
-        y = find(y, par);
-        if(rank[x] == rank[y]) {
-            rank[x]++;
-            par[y] = x;
-        } else if(rank[x] > rank[y]) {
-            par[y] = x;
-        } else par[x] = y;
-    }
     bool validateBinaryTreeNodes(int n, vector<int>& leftChild, vector<int>& rightChild) {
-        vector<int> par(n), rank(n);
-        for(int i = 0; i < n; i++) par[i] = i;
-        unordered_set<int> parSet;
+        vector<vector<int>> adj(n);
+        vector<int> indegree(n);
         for(int i = 0; i < n; i++) {
-            if(parSet.find(leftChild[i]) != parSet.end() || parSet.find(rightChild[i]) != parSet.end()) return false;
             if(leftChild[i] != -1) {
-                if(find(i, par) != find(leftChild[i], par)) {
-                    parSet.insert(leftChild[i]);
-                    Union(i, leftChild[i], par, rank);
-                } else return false;
+                adj[i].push_back(leftChild[i]);
+                indegree[leftChild[i]]++;
             }
             if(rightChild[i] != -1) {
-                if(find(i, par) != find(rightChild[i], par)) {
-                    parSet.insert(rightChild[i]);
-                    Union(i, rightChild[i], par, rank);
-                } else return false;
+                adj[i].push_back(rightChild[i]);
+                indegree[rightChild[i]]++;
             }
         }
         int count = 0;
+        int node = -1;
+        for(int i = 0; i < n; i++) {
+            if(indegree[i] == 0) {
+                node = i;
+                count++;
+            }
+        }
+        if(count != 1) return false;
+        queue<int> q;
+        q.push(node);
+        vector<int> vis(n);
+        vis[node] = 1;
+        int c = 0;
+        while(q.size()) {
+            auto t = q.front();
+            c++;
+            q.pop();
+            for(auto x : adj[t]) {
+                if(vis[x] == 1) return false;
+                q.push(x);
+                vis[x] = 1;
+            }
+        }
+        return c == n;
 
-        
-        for(int i = 0; i < n; i++) if(par[i] == i) count++;
-        return count == 1;
     }
 };
