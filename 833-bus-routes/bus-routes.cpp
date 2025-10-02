@@ -1,6 +1,7 @@
 class Solution {
 public:
     int numBusesToDestination(vector<vector<int>>& routes, int source, int target) {
+        swap(source, target);
         if(source == target) return 0;
         int n = routes.size();
         unordered_map<int, vector<int>> mp;
