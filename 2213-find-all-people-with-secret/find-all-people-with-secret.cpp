@@ -19,7 +19,6 @@ public:
         while(pq.size()) {
             auto [time, node] = pq.top();
             pq.pop();
-            // cout << node << " ";
             st.insert(node);
             while(adj[node].size()) {
                 if(adj[node].back().second >= time) {
