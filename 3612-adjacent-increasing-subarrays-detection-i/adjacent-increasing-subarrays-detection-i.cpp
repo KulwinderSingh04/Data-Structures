@@ -3,20 +3,30 @@ public:
     bool hasIncreasingSubarrays(vector<int>& nums, int k) {
         int n = nums.size();
         int count = 1;
+        int a = 0;
         if(k == 1) return true;
-        for(int i = 0; i <= n - 2 * k; i++) {
-            int j1 = i + 1;
-            int j2 = i + k + 1;
-            bool flag = true;
-            while(j2 < i + 2 * k) {
-                if(nums[j1] <= nums[j1 - 1] || nums[j2] <= nums[j2 - 1]) {
-                    flag = false;
-                    break;
+        for(int i = 1; i < n; i++) {
+            if(nums[i] > nums[i - 1]) count++;
+            else {
+                if(count >= 2 * k) return true;
+                if(count >= k) {
+                    a++;
+                    count = 1;
+                    if(a == 2) return true;
+                } else {
+                    count = 1;
+                    a = 0;
                 }
-                j1++;
-                j2++;
             }
-            if(flag) return true;
+        }
+        if(count >= 2 * k) return true;
+        if(count >= k) {
+            a++;
+            count = 1;
+            if(a == 2) return true;
+        } else {
+            count = 1;
+            a = 0;
         }
         return false;
     }
