@@ -1,7 +1,7 @@
 class Solution {
 public:
     int findSmallestInteger(vector<int>& nums, int value) {
-        unordered_map<int, int> mp;
+        vector<int> mp(value);
         unordered_set<int> st;
         int n = nums.size();
         for(int i = 0; i < n; i++) {
