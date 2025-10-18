@@ -7,12 +7,12 @@ public:
             adj[x[0]].push_back(x[1]);
             adj[x[1]].push_back(x[0]);
         }
-        priority_queue<pp, vector<pp>, greater<pp>> pq;
+        queue<pp> pq;
         pq.push({0, 1});
         vector<int> dist1(n + 1, INT_MAX), dist2(n + 1, INT_MAX);
         dist1[1] = 0;
         while(pq.size()) {
-            auto t = pq.top();
+            auto t = pq.front();
             pq.pop();
             int dis = t.first;
             int node = t.second;
@@ -29,9 +29,6 @@ public:
                 }
             }
         }
-        // for(int i = 1; i <= n; i++) cout << dist1[i] << " ";
-        // cout << endl;
-        // for(int i = 1; i <= n; i++) cout << dist2[i] << " ";
         return dist2[n];
     }
 };
