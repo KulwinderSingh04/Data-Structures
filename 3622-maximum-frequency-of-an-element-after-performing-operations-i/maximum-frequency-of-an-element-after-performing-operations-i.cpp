@@ -8,7 +8,6 @@ public:
         for(int i = 0; i < n; i++) freq[nums[i]]++;
         for(int i = 1; i < mx + 1; i++) {
             freq[i] += freq[i - 1];
-            cout << freq[i] << " ";
         }
         int ans = 0;
         for(int i = 1; i < mx + 1; i++) {
