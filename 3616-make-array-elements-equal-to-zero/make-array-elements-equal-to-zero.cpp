@@ -1,36 +1,16 @@
 class Solution {
 public:
-    int fun(int i, int dir, vector<int>& nums) {
-        int n = nums.size();
-        vector<int> v = nums;
-        int j = i;
-        while(j >= 0 && j < n) {
-            if(v[j] != 0) {
-                v[j]--;
-                dir = (dir == -1 ? 1 : -1);
-            }
-            j += dir;
-        }
-        for(auto x : v) {
-            if(x != 0) {
-                return 0;
-            }
-        }
-        return 1;
-    }
     int countValidSelections(vector<int>& nums) {
         int n = nums.size();
+        int left = 0, right = 0;
+        for(auto x : nums) right += x;
         int count = 0;
         for(int i = 0; i < n; i++) {
+            left += nums[i];
+            right -= nums[i];
             if(nums[i] == 0) {
-                if(fun(i, 1, nums) == 1) {
-                    // cout << i << " " << 1 << endl;
-                    count++;
-                } 
-                if(fun(i, -1, nums) == 1) {
-                    // cout << i << " " << -1 << endl;
-                    count++;
-                }
+                if(left - right >= 0 && left - right <= 1) count++;
+                if(right - left >= 0 && right - left <= 1) count++;
             }
         }
         return count;
