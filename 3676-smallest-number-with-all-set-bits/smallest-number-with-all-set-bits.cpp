@@ -8,8 +8,6 @@ public:
                 break;
             }
         }
-        int ans = 0;
-        for(int i = 0; i <= len; i++) ans |= (1 << len);
-        return ans * 2 - 1;
+        return (1 << len + 1) - 1;
     }
 };
