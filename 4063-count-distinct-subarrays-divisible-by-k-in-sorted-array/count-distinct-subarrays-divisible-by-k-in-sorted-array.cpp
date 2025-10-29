@@ -15,7 +15,6 @@ public:
             }
             mp[sum]++;
         }
-        cout << ans << " ";
         for(auto x : freq) {
             
             long long sum = 0;
