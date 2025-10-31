@@ -15,19 +15,30 @@ public:
         }
     }
     vector<bool> checkIfPrerequisite(int numCourses, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {
-        map<vector<int>, vector<int>> mp;
-        for(int i = 0; i < queries.size(); i++) {
-            mp[queries[i]].push_back(i);
-        }
         vector<vector<int>> adj(numCourses);
+        vector<int> indegree(numCourses);
         for(auto x : prerequisites) {
             adj[x[0]].push_back(x[1]);
+            indegree[x[1]]++;
         }
-        vector<bool> ans(queries.size(), false);
-        for(int i = 0; i < numCourses; i++) {
-            vector<int> vis(numCourses);
-            
-            dfs(i, i, adj, vis, mp, ans);
+        vector<bool> ans;
+        queue<int> q;
+        vector<unordered_set<int>> parent(numCourses);
+        for(int i = 0; i < numCourses; i++) if(indegree[i] == 0) q.push(i);
+        while(q.size()) {
+            auto t = q.front();
+            q.pop();
+            for(auto x : adj[t]) {
+                parent[x].insert(t);
+                for(auto p : parent[t]) parent[x].insert(p);
+                indegree[x]--;
+                if(indegree[x] == 0) {
+                    q.push(x);
+                }
+            }
+        }
+        for(auto q : queries) {
+            ans.push_back(parent[q[1]].find(q[0]) != parent[q[1]].end());
         }
         return ans;
     }
