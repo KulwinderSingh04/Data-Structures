@@ -8,7 +8,7 @@ public:
     }
     long long minimumTime(vector<int>& d, vector<int>& r) {
         long long lo = 0;
-        long long hi = 1e12;
+        long long hi = 4e9;
         long long ans = 0;
         while(lo <= hi) {
             long long mid = lo + (hi - lo) / 2;
