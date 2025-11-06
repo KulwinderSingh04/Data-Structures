@@ -37,22 +37,16 @@ public:
     }
     int magnificentSets(int n, vector<vector<int>>& edges) {
         vector<vector<int>> adj(n + 1);
-        vector<pp> degree(n + 1);
-        for(int i = 1; i < n + 1; i++) degree[i].second = i; 
         for(auto x : edges) {
             adj[x[0]].push_back(x[1]);
             adj[x[1]].push_back(x[0]);
-            degree[x[0]].first++;
-            degree[x[1]].first++;
         }
-        sort(degree.begin(), degree.end());
         vector<int> color(n + 1, -1);
         int ans = 0;
-        for(auto x : degree) {
-            if(x.second == 0) continue;
-            if(color[x.second] == -1) {
+        for(int x = 1; x <= n; x++) {
+            if(color[x] == -1) {
                 vector<int> v;
-                if(!oddCycle(x.second, 0, adj, color, v)) {
+                if(!oddCycle(x, 0, adj, color, v)) {
                     return -1;
                 }
                 int a = 0;
@@ -61,6 +55,5 @@ public:
             }
         }
         return ans;
-
     }
 };
