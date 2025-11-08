@@ -1,48 +1,81 @@
 class Solution {
 public:
-    bool fun1(vector<vector<int>>& adj, int bob, int time, unordered_map<int, int>& m, unordered_set<int>& s) {
-        if(s.find(bob) != s.end()) return false;
-        s.insert(bob);
-        m[bob] = time;
-        if(bob == 0) return true;
-        for(auto x : adj[bob]) {
-            bool a = fun1(adj, x, time + 1, m, s);
-            if(a) return a;
+    vector<int> bfsBob(int node, vector<vector<int>>& adj) {
+        int n = adj.size();
+        queue<int> q;
+        q.push(node);
+        vector<int> vis(n);
+        vector<int> par(n);
+        for(int i = 0; i < n; i++) par[i] = i;
+        vis[node] = 1;
+        while(q.size()) {
+            auto t = q.front();
+            q.pop();
+            // cout << t.back() << " ";
+            if(t == 0) break;
+            for(auto x : adj[t]) {
+                if(vis[x] == 0) {
+                    par[x] = t;
+                    q.push(x);
+                    vis[x] = 1;
+                }
+            }
         }
-        m.erase(bob);
-        return false;
+        int newNode = 0;
+        vector<int> ans;
+        while(newNode != node) {
+            ans.push_back(newNode);
+            newNode = par[newNode];
+        }
+        // for(auto x : par) cout << x << " ";
+        ans.push_back(node);
+        reverse(ans.begin(), ans.end());
+        return ans;
     }
-    void fun2(vector<vector<int>>& adj, int alice, int time, unordered_map<int, int>& m, unordered_set<int>& s, vector<int>& amount, int ans, int& mx) {
-        if(s.find(alice) != s.end()) {
-            return;
+    typedef pair<int, pair<int, int>> pp;
+    int bfsAlice(vector<vector<int>>& adj, vector<int>& bobRoute, vector<int>& amount) {
+        int n = adj.size();
+        queue<pp> q;
+        q.push({0, {0, amount[0]}});
+        vector<int> vis(n);
+        vis[0] = 1;
+        vector<int> bobVis(n);
+        bobVis[bobRoute[0]] = 1;
+        int ans = INT_MIN;
+        while(q.size()) {
+            auto t = q.front();
+            q.pop();
+            int node = t.first;
+            int idx = t.second.first;
+            int money = t.second.second;
+            if(adj[node].size() == 1 && node != 0) ans = max(ans, money);
+            for(auto x : adj[node]) {
+                if(vis[x] == 0) {
+                    if(idx + 1 < bobRoute.size() && bobRoute[idx + 1] == x) {
+                        q.push({x, {idx + 1, money + amount[x] / 2}});
+                    }
+                    else if(bobVis[x] == 1) {
+                        q.push({x, {idx + 1, money}});
+                    } else {
+                        q.push({x, {idx + 1, money + amount[x]}});
+                    }
+                    if(idx + 1 < bobRoute.size()) bobVis[bobRoute[idx + 1]] = 1;
+                    vis[x] = 1;
+                }
+            }
         }
-        s.insert(alice);
-        if(m.find(alice) == m.end() || time < m[alice]) ans += amount[alice];
-        else if(time == m[alice]) {
-            ans += amount[alice] / 2;
-        }
-        if(adj[alice].size() == 1 && alice != 0) {
-            mx = max(mx, ans);
-        }
-        for(auto x : adj[alice]) {
-            fun2(adj, x, time + 1, m, s, amount, ans, mx);
-        }
+        return ans;
     }
     int mostProfitablePath(vector<vector<int>>& edges, int bob, vector<int>& amount) {
-        int n = amount.size();
+        int n = edges.size() + 1;
         vector<vector<int>> adj(n);
-        for(auto edge : edges) {
-            adj[edge[0]].push_back(edge[1]);
-            adj[edge[1]].push_back(edge[0]);
+        for(auto x : edges) {
+            adj[x[0]].push_back(x[1]);
+            adj[x[1]].push_back(x[0]);
         }
-        unordered_map<int, int> m;
-        unordered_set<int> s;
-        m[bob] = 0;
-        fun1(adj, bob, 0, m, s);
-        int ans = 0;
-        unordered_set<int> st;
-        int mx = INT_MIN;
-        fun2(adj, 0, 0, m, st, amount, ans, mx);
-        return mx;
+        vector<int> bobRoute = bfsBob(bob, adj);
+        // for(auto x : bobRoute) cout << x << " ";
+        // return 1;
+        return bfsAlice(adj, bobRoute, amount);
     }
 };
