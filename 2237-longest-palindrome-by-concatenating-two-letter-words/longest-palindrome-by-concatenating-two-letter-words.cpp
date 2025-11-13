@@ -8,7 +8,7 @@ public:
         }
         bool flag = true;
         for(auto x : mp) {
-            cout << x.first << " " << x.second << endl;
+            // cout << x.first << " " << x.second << endl;
             auto t = x;
             if(t.first[0] == t.first[1]) {
                 ans += t.second / 2 * 4;
