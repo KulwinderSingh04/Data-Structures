@@ -10,13 +10,12 @@ public:
         int p2 = intervals[0][1];
         int ans = 2;
         for(int i = 1; i < n; i++) {
-            if (p1 >= intervals[i][0]) continue;
             if(p2 < intervals[i][0]) {
                 p1 = intervals[i][1] - 1;
                 p2 = intervals[i][1];
                 ans += 2;
             }
-            else {
+            else if(p1 < intervals[i][0]) {
                 p1 = p2;
                 p2 = intervals[i][1];
                 ans++;
