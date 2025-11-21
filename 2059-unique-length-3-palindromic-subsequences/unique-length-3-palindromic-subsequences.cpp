@@ -18,7 +18,6 @@ public:
             if(hash[s[i] - 97] == 0) pref[i] += 1;
             hash[s[i] - 97]++;
         }
-        // for(auto x : pref) cout << x << " ";
         vector<int> lastPos(26, -1);
         for(int i = n - 1; i >= 0; i--) {
             if(lastPos[s[i] - 97] == -1) lastPos[s[i] - 97] = i; 
@@ -35,7 +34,6 @@ public:
             char ch = s[i];
             int pos = lastPos[ch - 97];
             if(i == pos || st.find(ch) != st.end()) continue;
-            cout << i << " " << pos << endl;
             int unique = fun(i, pos - 1, charSet);
             ans += unique;
             st.insert(s[i]);
