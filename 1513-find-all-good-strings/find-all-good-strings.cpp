@@ -19,15 +19,25 @@ public:
         return dp[i][tight][j] = ans;
     }
     vector<int> buildLps(string &evil) {
-        int m = evil.size();
-        vector<int> lps(m, 0);
-
-        for (int i = 1, j = 0; i < m; i++) {
-            while (j > 0 && evil[i] != evil[j]) j = lps[j - 1];
-            if (evil[i] == evil[j]) j++;
-            lps[i] = j;
+        int n = evil.size();
+        vector<int> v(n, 0);
+        int len = 0;
+        v[0] = 0;
+        int i = 1;
+        while(i < n) {
+            if(evil[i] == evil[len]) {
+                len++;
+                v[i] = len;
+                i++;
+            } else {
+                if(len == 0) {
+                    i++;
+                    v[i - 1] = 0;
+                }
+                else len = v[len - 1];
+            }
         }
-        return lps;
+        return v;
     }
     int findGoodStrings(int n, string s1, string s2, string evil) {
         vector<int> lps = buildLps(evil);
