@@ -1,1 +1,1 @@
-<h2>lexicographically-smallest-negated-permutation-that-sums-to-target Notes</h2><hr>[ Time taken: 11 hrs 55 m 34 s ]
+<h2>lexicographically-smallest-negated-permutation-that-sums-to-target Notes</h2><hr>[ Time taken: 12 hrs 3 m 36 s ]
