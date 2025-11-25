@@ -7,8 +7,9 @@ public:
             int rem = num % k;
             if(rem == 0) return i;
             if(st.find(rem) != st.end()) return -1;
+            st.insert(rem);
             num = rem * 10 + 1;
         }
-        return -1;
+        return 0;
     }
 };
