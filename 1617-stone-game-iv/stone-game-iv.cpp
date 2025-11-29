@@ -13,8 +13,8 @@ public:
                 }
             } else break;
         }
-        if(alice == 0) return false;
-        else return true;
+        if(alice == 0) return dp[n][alice] = false;
+        else return dp[n][alice] = true;
     }
     bool winnerSquareGame(int n) {
         vector<int> v;
