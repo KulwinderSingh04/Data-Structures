@@ -29,6 +29,6 @@ public:
         }
         vector<int> v = nums;
         reverse(v.begin(), v.end());
-        return max({mx1, fun(nums), fun(v)});
+        return max({mx1, fun(nums)});
     }
 };
