@@ -27,8 +27,6 @@ public:
             mx1 = max(mx1, sum);
             if(sum < 0) sum = 0;
         }
-        vector<int> v = nums;
-        reverse(v.begin(), v.end());
         return max({mx1, fun(nums)});
     }
 };
