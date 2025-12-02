@@ -12,13 +12,25 @@
  */
 class Solution {
 public:
+    void fun(TreeNode* root, int val) {
+        if(root == NULL) return;
+        if(root -> val > val) {
+            if(root -> left) {
+                fun(root -> left, val);
+            } else {
+                root -> left = new TreeNode(val);
+            }
+        } else {
+            if(root -> right) {
+                fun(root -> right, val);
+            } else {
+                root -> right = new TreeNode(val);
+            }
+        }
+    }
     TreeNode* insertIntoBST(TreeNode* root, int val) {
         if(root == NULL) return new TreeNode(val);
-        if(root -> val > val) {
-            root -> left = insertIntoBST(root -> left, val);
-        } else {
-            root -> right = insertIntoBST(root -> right, val);
-        }
+        fun(root, val);
         return root;
     }
 };
