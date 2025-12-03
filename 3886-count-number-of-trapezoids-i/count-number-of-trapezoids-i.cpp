@@ -2,7 +2,7 @@ class Solution {
 public:
     int MOD = 1e9 + 7;
     int countTrapezoids(vector<vector<int>>& points) {
-        map<long long, long long> mp;
+        unordered_map<long long, long long> mp;
         for(auto x : points) {
             mp[x[1]]++;
         }
