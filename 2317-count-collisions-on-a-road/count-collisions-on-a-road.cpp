@@ -7,7 +7,6 @@ public:
         while(i1 < n && directions[i1] == 'L') i1++;
         int i2 = n - 1;
         while(i2 >= 0 && directions[i2] == 'R') i2--;
-        cout << i1 << " " << i2 << endl;
         for(int i = i1; i <= i2; i++) {
             if(directions[i] == 'L' || directions[i] == 'R') ans++;
         }
