@@ -4,10 +4,8 @@ public:
         int ans = 0;
         for(int i = 1; i <= n; i++) {
             for(int j = 1; j <= n; j++) {
-                for(int k = 1; k <= n; k++) {
-                    // cout <<i << " " << j << " " << k << endl;
-                    if(i * i + j * j == k * k) ans++;
-                }
+                int k = sqrt(i * i + j * j);
+                if(k * k == i * i + j * j && k <= n) ans++;
             }
         }
         return ans;
