@@ -2,15 +2,15 @@ class Solution {
 public:
     int MOD = 1e9 + 7;
     int specialTriplets(vector<int>& nums) {
-        unordered_map<long long, long long> leftMap, rightMap;
-        for(auto x : nums) rightMap[x]++;
+        unordered_map<int, long long> mp1, mp2;
+        for(auto x : nums) mp2[x]++;
         long long ans = 0;
         int n = nums.size();
         for(int i = 0; i < n; i++) {
-            rightMap[nums[i]]--;
-            ans += leftMap[1LL * 2 * nums[i]] * rightMap[2 * nums[i]];
-            leftMap[nums[i]]++;
+            mp2[nums[i]]--;
+            ans += mp1[2 * nums[i]] * mp2[2 * nums[i]];
             ans %= MOD;
+            mp1[nums[i]]++;
         }
         return ans;
     }
