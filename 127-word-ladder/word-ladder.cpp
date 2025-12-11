@@ -5,6 +5,7 @@ public:
         for(auto x : dict) s.insert(x);
         queue<pair<string, int>> q;
         q.push({begin, 1});
+        s.erase(begin);
         int ans = 0;
         while(q.size()) {
             auto a = q.front();
