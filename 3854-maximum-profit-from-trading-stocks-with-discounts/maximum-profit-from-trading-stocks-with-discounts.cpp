@@ -1,53 +1,76 @@
-class Solution {
+class Solution
+{
 public:
-    vector<vector<int>> tree;
-    vector<int> buyPrice, sellPrice;
-    int budget;
-
-    int maxProfit(int n, vector<int>& present, vector<int>& future,
-                  vector<vector<int>>& hierarchy, int B) {
-        buyPrice = present;
-        sellPrice = future;
-        budget = B;
-
-        tree.assign(n, {});
-        for (auto &h : hierarchy) {
-            tree[h[0] - 1].push_back(h[1] - 1);
+    void DFS(int u, const vector<int>& present, const vector<int>& future, unordered_map<int, vector<int>>& adj, vector<vector<vector<int>>>& statesProfit, int budget) {
+        vector<pair<vector<int>, vector<int>>> childrenStatesProfit;
+        
+        for (int v : adj[u]) {
+            DFS(v, present, future, adj, statesProfit, budget);
+            childrenStatesProfit.push_back({statesProfit[v][0], statesProfit[v][1]});
         }
 
-        auto dp = dfs(0);
-        return dp[budget][0];
-    }
+        // parentBought = 0 or 1
+        for (int parentBought = 0; parentBought <= 1; ++parentBought) {
 
-    vector<vector<int>> dfs(int u) {
-        vector<vector<int>> dp(budget + 1, vector<int>(2, 0));
+            int price  = (parentBought == 1) ? present[u] / 2 : present[u];
+            int profit = future[u] - price;
+            
+            vector<int> bestProfitAtU(budget + 1, 0);
 
-        for (int v : tree[u]) {
-            auto child = dfs(v);
-            vector<vector<int>> next(budget + 1, vector<int>(2, 0));
+            // Case 1: Do NOT buy node u
+            vector<int> childrenProfitIfUNotBought(budget + 1, 0);
 
-            for (int b = 0; b <= budget; b++) {
-                for (int cb = 0; cb <= b; cb++) {
-                    next[b][0] = max(next[b][0], dp[b - cb][0] + child[cb][0]);
-                    next[b][1] = max(next[b][1], dp[b - cb][1] + child[cb][1]);
+            for (const auto& child : childrenStatesProfit) { //from all child
+                vector<int> temp(budget + 1, 0);
+
+                for (int used = 0; used <= budget; ++used) { 
+                    for (int take = 0; used + take <= budget; ++take) { 
+                        temp[used + take] = max(temp[used + take], childrenProfitIfUNotBought[used] + child.first[take]);
+                    }
+                }
+                childrenProfitIfUNotBought = move(temp);
+            }
+
+            for (int b = 0; b <= budget; ++b) {
+                bestProfitAtU[b] = max(bestProfitAtU[b], childrenProfitIfUNotBought[b]);
+            }
+            if (price <= budget) {
+                vector<int> childrenProfitIfUBought(budget + 1, 0);
+
+                for (const auto& child : childrenStatesProfit) {
+                    vector<int> temp(budget + 1, 0);
+
+                    for (int used = 0; used <= budget; ++used) {
+                        for (int take = 0; used + take <= budget; ++take) {
+                            temp[used + take] = max(temp[used + take], childrenProfitIfUBought[used] + child.second[take]);
+                        }
+                    }
+                    childrenProfitIfUBought = move(temp);
+                }
+
+                for (int b = price; b <= budget; ++b) {
+                    bestProfitAtU[b] = max(bestProfitAtU[b], childrenProfitIfUBought[b - price] + profit);
                 }
             }
-            dp.swap(next);
+
+            statesProfit[u][parentBought] = move(bestProfitAtU);
         }
+    }
 
-        vector<vector<int>> ans(budget + 1, vector<int>(2, 0));
-        int discounted = buyPrice[u] / 2;
+    int maxProfit( int n, vector<int>& present, vector<int>& future, vector<vector<int>>& hierarchy, int budget) {
+        unordered_map<int, vector<int>> adj;
+        for (auto& h : hierarchy) {
+            int u = h[0]-1;
+            int v = h[1]-1;
+            adj[u].push_back(v);
+        }
+        vector<vector<vector<int>>> statesProfit(n, vector<vector<int>>(2, vector<int>(budget + 1, 0)));
 
-        for (int b = 0; b <= budget; b++) {
-            ans[b][0] = dp[b][0];
-            if (b >= buyPrice[u])
-                ans[b][0] = max(ans[b][0],
-                                sellPrice[u] - buyPrice[u] + dp[b - buyPrice[u]][1]);
+        DFS(0, present, future, adj, statesProfit, budget);
 
-            ans[b][1] = dp[b][0];
-            if (b >= discounted)
-                ans[b][1] = max(ans[b][1],
-                                sellPrice[u] - discounted + dp[b - discounted][1]);
+        int ans = 0;
+        for (int b = 0; b <= budget; ++b) {
+            ans = max(ans, statesProfit[0][0][b]);
         }
         return ans;
     }
