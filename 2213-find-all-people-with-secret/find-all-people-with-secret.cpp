@@ -6,9 +6,9 @@ public:
             return a[2] < b[2];
         });
         vector<vector<pp>> adj(n);
-        for(int i = 0; i < meetings.size(); i++) {
-            adj[meetings[i][0]].push_back({meetings[i][1], meetings[i][2]});
-            adj[meetings[i][1]].push_back({meetings[i][0], meetings[i][2]});
+        for(auto x: meetings) {
+            adj[x[0]].push_back({x[1], x[2]});
+            adj[x[1]].push_back({x[0], x[2]});
         }
         priority_queue<pp, vector<pp>, greater<pp>> q;
         q.push({0, 0});
