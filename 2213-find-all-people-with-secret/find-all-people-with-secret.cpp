@@ -2,34 +2,39 @@ class Solution {
 public:
     typedef pair<int, int> pp;
     vector<int> findAllPeople(int n, vector<vector<int>>& meetings, int firstPerson) {
+        sort(meetings.begin(), meetings.end(), [](vector<int>& a, vector<int>& b) {
+            return a[2] < b[2];
+        });
         vector<vector<pp>> adj(n);
-        for(auto x : meetings) {
-            if(x[0] == firstPerson && x[1] == 0) continue;
-            if(x[1] == firstPerson && x[0] == 0) continue;
-            adj[x[0]].push_back({x[1], x[2]});
-            adj[x[1]].push_back({x[0], x[2]});
+        for(int i = 0; i < meetings.size(); i++) {
+            adj[meetings[i][0]].push_back({meetings[i][1], meetings[i][2]});
+            adj[meetings[i][1]].push_back({meetings[i][0], meetings[i][2]});
         }
-        vector<int> ans;
+        priority_queue<pp, vector<pp>, greater<pp>> q;
+        q.push({0, 0});
+        q.push({0, firstPerson});
         unordered_set<int> st;
-        // ans.push_back(0);
-        // ans.push_back(firstPerson);
-        priority_queue<pp, vector<pp>, greater<pp>> pq;
-        pq.push({0, 0});
-        pq.push({0, firstPerson});
-        while(pq.size()) {
-            auto [time, node] = pq.top();
-            pq.pop();
-            st.insert(node);
-            while(adj[node].size()) {
-                if(adj[node].back().second >= time) {
-                    pq.push({adj[node].back().second, adj[node].back().first});
+        st.insert(0);
+        st.insert(firstPerson);
+        vector<int> timeArr(n, INT_MAX);
+        timeArr[0] = 0;
+        timeArr[firstPerson] = 0;
+        while(q.size()) {
+            auto t = q.top();
+            q.pop();
+            int node = t.second;
+            int time = t.first;
+            for(auto x : adj[node]) {
+                if(x.second >= timeArr[x.first]) continue;
+                if(time <= x.second) {
+                    st.insert(x.first);
+                    timeArr[x.first] = x.second;
+                    q.push({x.second, x.first});
                 }
-                adj[node].pop_back();
             }
         }
-        for(auto x : st) {
-            ans.push_back(x);
-        }
+        vector<int> ans;
+        for(auto x : st) ans.push_back(x);
         return ans;
     }
 };
