@@ -1,35 +1,36 @@
 class Solution {
 public:
-    typedef pair<long long, long long> pp;
+    typedef pair<long long, int> pp;
     int mostBooked(int n, vector<vector<int>>& meetings) {
-        vector<long long> rooms(n, 0);
-        priority_queue<long long, vector<long long>, greater<long long>> roomHeap;
-        priority_queue<pp, vector<pp>, greater<pp>> endTimeHeap;
-        for(int i = 0; i < n; i++) roomHeap.push(i);
         sort(meetings.begin(), meetings.end());
+        set<int> st;
+        for(int i = 0; i < n; i++) st.insert(i);
+        vector<int> hash(n);
+        priority_queue<pp, vector<pp>, greater<pp>> pq;
+        int idx = 0;
+        long long delay = 0;
         for(int i = 0; i < meetings.size(); i++) {
-            if(roomHeap.size()) {
-                endTimeHeap.push({meetings[i][1], roomHeap.top()});
-                rooms[roomHeap.top()]++;
-                roomHeap.pop();
-            } else {
-                auto t = endTimeHeap.top();
-                endTimeHeap.pop();
-                long long roomAvailable = t.second;
-                long long meetFinish = t.first;
-                rooms[roomAvailable]++;
-                if(meetings[i][0] < meetFinish) endTimeHeap.push({1LL * meetings[i][1] + (meetFinish - meetings[i][0]), roomAvailable});
-                else endTimeHeap.push({meetings[i][1], roomAvailable});
+            while(pq.size() && pq.top().first <= meetings[i][0]) {
+                auto t = pq.top();
+                pq.pop();
+                st.insert(t.second);
             }
-            // cout << i << endl;
-            while(i < meetings.size() - 1 && endTimeHeap.size() && endTimeHeap.top().first <= meetings[i + 1][0]) {
-                // cout << endTimeHeap.top().second << " ";
-                roomHeap.push(endTimeHeap.top().second);
-                endTimeHeap.pop();
+            if(st.size()) {
+                hash[*(st.begin())]++;
+                if(hash[idx] < hash[*(st.begin())]) idx = *st.begin();
+                else if(hash[idx] == hash[*st.begin()]) idx = min(idx, *st.begin());
+                pq.push({meetings[i][1], *st.begin()});
+                st.erase(st.begin());
+            } else {
+                auto t = pq.top();
+                pq.pop();
+                delay = t.first - meetings[i][0];
+                hash[t.second]++;
+                if(hash[idx] < hash[t.second]) idx = t.second;
+                else if(hash[idx] == hash[t.second]) idx = min(idx, t.second);
+                pq.push({1LL * delay + meetings[i][1], t.second});
             }
         }
-        int ans = 0;
-        for(int i = 0; i < n; i++) if(rooms[i] > rooms[ans]) ans = i;
-        return ans;
+        return idx;
     }
 };
