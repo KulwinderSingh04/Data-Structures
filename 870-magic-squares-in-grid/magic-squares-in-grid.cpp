@@ -19,7 +19,7 @@ public:
                 st.insert(grid[i][j]);
             }
         }
-        if(st.size() == 9 && *st.begin() == 1 && *prev(st.end()) == 9) return true;
+        if(*st.begin() == 1 && *prev(st.end()) == 9) return true;
         return false;
     }
     int funCol(int r, int c, vector<vector<int>>& grid) {
