@@ -1,70 +1,48 @@
-class DSU {
-    vector<int> root;
-    vector<int> size;
-
-public:
-    DSU(int n) : root(n), size(n, 1) { iota(root.begin(), root.end(), 0); }
-
-    int find(int x) {
-        if (root[x] != x)
-            root[x] = find(root[x]);
-
-        return root[x];
-    }
-
-    void unite(int x, int y) {
-        int rx = find(x);
-        int ry = find(y);
-
-        if (rx == ry)
-            return;
-
-        if (size[rx] > size[ry]) {
-            int t = rx;
-            rx = ry;
-            ry = t;
-        }
-
-        root[rx] = ry;
-        size[ry] += size[rx];
-    }
-};
-
 class Solution {
 public:
-    int latestDayToCross(int row, int col, vector<vector<int>>& cells) {
-        DSU dsu(row * col + 2);
-        vector<vector<int>> grid(row, vector<int>(col, 0));
-        int dirs[4][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-
-        for (int i = (int)cells.size() - 1; i >= 0; i--) {
-            int r = cells[i][0] - 1;
-            int c = cells[i][1] - 1;
-            grid[r][c] = 1;
-
-            int id1 = r * col + c + 1;
-
-            for (int k = 0; k < 4; k++) {
-                int nr = r + dirs[k][0];
-                int nc = c + dirs[k][1];
-
-                if (nr >= 0 && nr < row && nc >= 0 && nc < col &&
-                    grid[nr][nc] == 1) {
-                    int id2 = nr * col + nc + 1;
-                    dsu.unite(id1, id2);
-                }
-            }
-
-            if (r == 0)
-                dsu.unite(0, id1);
-
-            if (r == row - 1)
-                dsu.unite(row * col + 1, id1);
-
-            if (dsu.find(0) == dsu.find(row * col + 1))
-                return i;
+    vector<vector<int>> dir = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+    bool dfs(int r, int c, vector<vector<int>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        if(r == n - 1) return true;
+        grid[r][c] = 1;
+        for(int i = 0; i < 4; i++) {
+            int nr = r + dir[i][0];
+            int nc = c + dir[i][1];
+            if(nr < 0 || nr >= n || nc < 0 || nc >= m || grid[nr][nc] == 1) continue;
+            bool a = dfs(nr, nc, grid);
+            if(a) return a;
         }
-
-        return -1;
+        return false;
+    }
+    int fun(int mid, int n, int m, vector<vector<int>>& cells) {
+        vector<vector<int>> grid(n, vector<int> (m));
+        for(int i = 0; i <= mid; i++) {
+            grid[cells[i][0] - 1][cells[i][1] - 1] = 1;
+        }
+        for(int j = 0; j < m; j++) {
+            if(grid[0][j] == 0) {
+                bool a = dfs(0, j, grid);
+                if(a) return a;
+            }
+        }
+        return false;
+    }
+    int latestDayToCross(int row, int col, vector<vector<int>>& cells) {
+        int n = row;
+        int m = col;
+        int lo = 0;
+        int hi = cells.size() - 1;
+        int ans = 0;
+        while(lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if(fun(mid, n, m, cells)) {
+                ans = mid;
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        return ans + 1;
     }
 };
