@@ -14,12 +14,10 @@ public:
             }
             if(count > 4) return 0;
         }
-        cout << sqrt(n) << " ";
         if((int)sqrt(n) * sqrt(n) == n) {
             count++;
             sum += (int)sqrt(n);
         }
-        cout << count << " ";
         return count == 4 ? sum : 0;
     }
     int sumFourDivisors(vector<int>& nums) {
