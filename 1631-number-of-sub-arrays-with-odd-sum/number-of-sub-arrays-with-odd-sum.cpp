@@ -1,21 +1,20 @@
 class Solution {
 public:
+    int MOD = 1e9 + 7;
     int numOfSubarrays(vector<int>& arr) {
-        int zero = 0, one = 0;
-        int sum = 0, ans = 0;
+        unordered_map<int, int> mp;
+        mp[0] = 1;
         int n = arr.size();
-        zero = 1;
+        int ans = 0;
+        int sum = 0;
         for(int i = 0; i < n; i++) {
             sum += arr[i];
-            if(sum % 2 == 0) {
-                ans += one;
-                zero++;
+            sum %= 2;
+            if(mp.find(1 - sum) != mp.end()) {
+                ans += mp[1 - sum];
+                ans %= MOD;
             }
-            else {
-                ans += zero;
-                one++;
-            }
-            ans %= 1000000007;
+            mp[sum]++;
         }
         return ans;
     }
