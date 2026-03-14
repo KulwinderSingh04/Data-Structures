@@ -8,7 +8,6 @@ public:
                 int div = k / (1 << (n - 1 - i)) - 1;
                 if(k % (1 << (n - 1 - i)) == 0) ans += div + 97;
                 else ans += div + 98;
-                if(ans.back() > 'c') return "";
                 k = k % (1 << (n - 1 - i));
                 if(k == 0) k = (1 << (n - 1 - i));
             } else {
@@ -18,11 +17,7 @@ public:
                 else v = {'a', 'b'};
                 int div = k / (1 << (n - 1 - i)) - 1;
                 if(k % (1 << (n - 1 - i)) == 0) ans += v[div];
-                else {
-                    if(div + 1 < 2) ans += v[div + 1]; 
-                    else return "";
-                } 
-                if(ans.back() > 'c') return "";
+                else ans += v[div + 1];
                 k = k % (1 << (n - 1 - i));
                 if(k == 0) k = (1 << (n - 1 - i));
             }
