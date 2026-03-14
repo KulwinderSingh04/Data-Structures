@@ -8,8 +8,6 @@ public:
                 int div = k / (1 << (n - 1 - i)) - 1;
                 if(k % (1 << (n - 1 - i)) == 0) ans += div + 97;
                 else ans += div + 98;
-                k = k % (1 << (n - 1 - i));
-                if(k == 0) k = (1 << (n - 1 - i));
             } else {
                 vector<int> v;
                 if(ans.back() == 'a') v = {'b', 'c'};
@@ -18,9 +16,9 @@ public:
                 int div = k / (1 << (n - 1 - i)) - 1;
                 if(k % (1 << (n - 1 - i)) == 0) ans += v[div];
                 else ans += v[div + 1];
-                k = k % (1 << (n - 1 - i));
-                if(k == 0) k = (1 << (n - 1 - i));
             }
+            k = k % (1 << (n - 1 - i));
+            if(k == 0) k = (1 << (n - 1 - i));
         }
         return ans;
     }
