@@ -53,9 +53,9 @@ public:
                 v.push_back(size[i]);
             }
         }
-        for(int i = 0; i < n; i++) cout << par[i] << endl;
-        cout << endl;
-        for(int i = 0; i < v.size(); i++) cout << v[i] << endl;
+        // for(int i = 0; i < n; i++) cout << par[i] << endl;
+        // cout << endl;
+        // for(int i = 0; i < v.size(); i++) cout << v[i] << endl;
         sort(v.begin(), v.end(), greater<int> ());
         int ans = v[0] + 1;
         if(v.size() > 1) ans += v[1];
