@@ -4,7 +4,7 @@ public:
         int cnt = 0;
         for(auto x : patterns) {
             for(int i = 0; i < word.size(); i++) {
-                if(word.substr(i, x.size()) == x) {
+                if(word[i] == x[0] && word.substr(i, x.size()) == x) {
                     cnt++;
                     break;
                 }
