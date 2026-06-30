@@ -4,13 +4,13 @@ public:
         int n = s.size();
         int i = 0;
         int j = 0;
+        vector<int> hash(3);
         int ans = 0;
-        vector<int> m(3);
         while(j < n) {
-            m[s[j] - 'a']++;
-            while(m[0] > 0 && m[1] > 0 && m[2] > 0) {
+            hash[s[j] - 'a']++;
+            while(hash[0] && hash[1] && hash[2]) {
                 ans += n - j;
-                m[s[i] - 'a']--;
+                hash[s[i] - 'a']--;
                 i++;
             }
             j++;
