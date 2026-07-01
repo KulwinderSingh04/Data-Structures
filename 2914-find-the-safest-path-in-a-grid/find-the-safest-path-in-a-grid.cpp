@@ -6,6 +6,7 @@ public:
         vector<vector<int>> dist(n, vector<int> (n, INT_MIN));
         priority_queue<pp> pq;
         pq.push({grid[0][0], {0, 0}});
+        dist[0][0] = grid[0][0];
         vector<vector<int>> dir = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
         while(pq.size()) {
             auto t = pq.top();
@@ -27,7 +28,7 @@ public:
     }
     int maximumSafenessFactor(vector<vector<int>>& grid) {
         int n = grid.size();
-        if(n == 1) return 0;
+        // if(n == 1) return 0;
         vector<vector<int>> mat(n, vector<int> (n, INT_MAX));
         vector<vector<int>> vis = mat;
         queue<pp> q;
