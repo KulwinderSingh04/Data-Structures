@@ -16,6 +16,6 @@ public:
     int subsequencePairCount(vector<int>& nums) {
         int n = nums.size();
         vector<vector<vector<int>>> dp(n, vector<vector<int>> (201, vector<int> (201, -1)));
-        return fun(0, 0, 0, nums, dp) - 1;
+        return (fun(0, 0, 0, nums, dp) - 1 + MOD) % MOD;
     }
 };
