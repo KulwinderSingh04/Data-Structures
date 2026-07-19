@@ -20,7 +20,6 @@ public:
             mp[s[i]]++;
         }
         int sz = mp.size();
-        cout << mask << endl;
         for(int i = 0; i < sz; i++) {
             char x = '_';
             for(char ch = 'a'; ch <= 'z'; ch++) {
