@@ -11,6 +11,6 @@ public:
         for(int i = sum; i < sum + 50; i++) {
             if(st.find(i) == st.end()) return i;
         }
-        return 51;
+        return 1;
     }
 };
