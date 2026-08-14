@@ -1,97 +1,79 @@
-class Solution {
-private:
-    struct Node {char leftChar; char rightChar; int length; int prefix; int suffix; int best;
+class Node {
+    public:
+    int pre;
+    int suf;
+    int mx;
+    char prech, sufch;
+    Node() {
+        pre = suf = mx = 0;
+    }
 };
-
-    vector<Node> tree;
-
-    Node mergeNodes(const Node& left, const Node& right) {
-        Node res;
-
-        res.leftChar = left.leftChar;
-        res.rightChar = right.rightChar;
-        res.length = left.length + right.length;
-
-        res.prefix = left.prefix;
-
-        if (
-            left.rightChar == right.leftChar &&
-            left.prefix == left.length
-        ) {
-            res.prefix = left.length + right.prefix;
-        }
-
-        res.suffix = right.suffix;
-
-        if (
-            left.rightChar == right.leftChar &&
-            right.suffix == right.length
-        ) {
-            res.suffix = right.length + left.suffix;
-        }
-
-        res.best = max(left.best, right.best);
-
-        if (left.rightChar == right.leftChar) {
-            res.best = max(
-                res.best,
-                left.suffix + right.prefix
-            );
-        }
-
-        return res;
-    }
-
-    void build( int node, int start, int end, const string& s
-    ) {
-        if (start == end) {
-            tree[node] = {s[start], s[start], 1, 1, 1, 1};
-            return;
-        }
-
-        int mid = (start + end) / 2;
-
-        build(node * 2, start, mid, s);
-        build(node * 2 + 1, mid + 1, end, s);
-
-        tree[node] = mergeNodes(
-            tree[node * 2],
-            tree[node * 2 + 1]
-        );
-    }
-
-    void update( int node, int start, int end, int index, char ch ) {
-        if (start == end) {
-            tree[node] = {ch, ch, 1, 1, 1, 1};
-            return;
-        }
-
-        int mid = (start + end) / 2;
-
-        if (index <= mid) {
-            update(node * 2, start, mid, index, ch);
-        } else {
-            update(node * 2 + 1, mid + 1, end, index, ch);
-        }
-
-        tree[node] = mergeNodes(
-            tree[node * 2],
-            tree[node * 2 + 1]
-        );
-    }
-
+class Solution {
 public:
-    vector<int> longestRepeating( string s, string queryCharacters, vector<int>& queryIndices) {
-        int n = s.size();
-        tree.resize(4 * n);
-        build(1, 0, n - 1, s);
-        vector<int> answer;
-
-        for (int i = 0; i < queryIndices.size(); i++) {
-            update(1, 0, n - 1, queryIndices[i], queryCharacters[i]);
-            answer.push_back(tree[1].best);
+    void buildTree(int i, int l, int r, string& s, vector<Node>& segTree) {
+        if(l > r) return;
+        if(l == r) {
+            segTree[i].pre = segTree[i].suf = segTree[i].mx = 1;
+            segTree[i].prech = segTree[i].sufch = s[l];
+            return;
         }
-
-        return answer;
+        int mid = l + (r - l) / 2;
+        buildTree(2 * i + 1, l, mid, s, segTree);
+        buildTree(2 * i + 2, mid + 1, r, s, segTree);
+        segTree[i].sufch = segTree[2 * i + 2].sufch;
+        if(segTree[2* i + 2].mx == r - mid && segTree[2 * i + 1].sufch == segTree[2 * i + 2].prech) {
+            segTree[i].suf = segTree[2 * i + 2].suf + segTree[2 * i + 1].suf;
+        } else {
+            segTree[i].suf = segTree[2 * i + 2].suf;
+        }
+        segTree[i].prech = segTree[2 * i + 1].prech;
+        if(segTree[2* i + 1].mx == mid - l + 1 && segTree[2 * i + 1].sufch == segTree[2 * i + 2].prech) {
+            segTree[i].pre = segTree[2 * i + 2].pre + segTree[2 * i + 1].pre;
+        } else {
+            segTree[i].pre = segTree[2 * i + 1].pre;
+        }
+        segTree[i].mx = max(segTree[2 * i + 1].mx, segTree[2 * i + 2].mx);
+        if(segTree[2 * i + 1].sufch == segTree[2 * i + 2].prech) {
+            segTree[i].mx = max(segTree[i].mx, segTree[2 * i + 2].pre + segTree[2 * i + 1].suf);
+        }
+    }
+    void update(int i, int l, int r, int idx, char ch, vector<Node>& segTree) {
+        if(l > r) return;
+        if(l == r) {
+            segTree[i].prech = segTree[i].sufch = ch;
+            segTree[i].pre = segTree[i].suf = segTree[i].mx = 1;
+            return;
+        }
+        int mid = l + (r - l) / 2;
+        if(idx <= mid) update(2 * i + 1, l, mid, idx, ch, segTree);
+        else update(2 * i + 2, mid + 1, r, idx, ch, segTree);
+        segTree[i].sufch = segTree[2 * i + 2].sufch;
+        if(segTree[2* i + 2].mx == r - mid && segTree[2 * i + 1].sufch == segTree[2 * i + 2].prech) {
+            segTree[i].suf = segTree[2 * i + 2].suf + segTree[2 * i + 1].suf;
+        } else {
+            segTree[i].suf = segTree[2 * i + 2].suf;
+        }
+        segTree[i].prech = segTree[2 * i + 1].prech;
+        if(segTree[2* i + 1].mx == mid - l + 1 && segTree[2 * i + 1].sufch == segTree[2 * i + 2].prech) {
+            segTree[i].pre = segTree[2 * i + 2].pre + segTree[2 * i + 1].pre;
+        } else {
+            segTree[i].prech = segTree[2 * i + 1].prech;
+            segTree[i].pre = segTree[2 * i + 1].pre;
+        }
+        segTree[i].mx = max(segTree[2 * i + 1].mx, segTree[2 * i + 2].mx);
+        if(segTree[2 * i + 1].sufch == segTree[2 * i + 2].prech) {
+            segTree[i].mx = max(segTree[i].mx, segTree[2 * i + 2].pre + segTree[2 * i + 1].suf);
+        }
+    }
+    vector<int> longestRepeating(string s, string queryCharacters, vector<int>& queryIndices) {
+        int n = s.size();
+        vector<Node> segTree(4 * n);
+        buildTree(0, 0, n - 1, s, segTree);
+        vector<int> ans;
+        for(int q = 0; q < queryIndices.size(); q++) {
+            update(0, 0, n - 1, queryIndices[q], queryCharacters[q], segTree);
+            ans.push_back(segTree[0].mx);
+        }
+        return ans;
     }
 };
