@@ -13,13 +13,13 @@ public:
             bool a = false;
             if(sum - nums[i] > 0) a = fun(mask | (1 << i), k, sum - nums[i], s, nums, dp);
             if(sum - nums[i] == 0) a = fun(mask | (1 << i), k - 1, s, s, nums, dp);
-            if(a) return a;
+            if(a) return dp[mask][k] = a;
         }
         return dp[mask][k] = false;
     }
     bool canPartitionKSubsets(vector<int>& nums, int k) {
         int n = nums.size();
-        vector<vector<int>> dp((1 << (n + 1)), vector<int> (k + 1, -1));
+        vector<vector<int>> dp((1 << n), vector<int> (k + 1, -1));
         int sum = accumulate(nums.begin(), nums.end(), 0);
         if(sum % k) return 0;
         sum /= k;
