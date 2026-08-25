@@ -2,27 +2,136 @@ class Solution {
 public:
     int shortestPathLength(vector<vector<int>>& graph) {
         int n = graph.size();
-        vector<vector<int>> vis(n, vector<int> (1 << n));
-        queue<pair<int, pair<int, int>>> q;
+        vector<vector<int>> mat(n, vector<int> (n));
         for(int i = 0; i < n; i++) {
-            q.push({i, {1 << i, 0}});
-            vis[i][1 << i] = 1;
+            for(int j = 0; j < graph[i].size(); j++) {
+                mat[i][graph[i][j]] = 1;
+            }
         }
-        while(q.size()) {
-            auto t = q.front();
-            q.pop();
-            int node = t.first;
-            int path = t.second.first;
-            int dis = t.second.second;
-            if(path == (1 << n) - 1) return dis;
-            for(auto x : graph[node]) {
-                int p = path | (1 << x);
-                if(vis[x][p] == 0) {
-                    q.push({x, {p, dis + 1}});
-                    vis[x][p] = 1;
+        vector<vector<int>> dp((1 << n), vector<int> (n, 1e9));
+        for(int i = 0; i < n; i++) {
+            dp[1 << i][i] = 0;
+        }
+        for(int mask = 1; mask < (1 << n); mask++) {
+            for(int last = 0; last < n; last++) {
+                if(dp[mask][last] == 1e9) continue;
+                if((mask & (1 << last)) == 0) continue;
+                for(int node = 0; node < n; node++) {
+                    int newMask = mask | (1 << node);
+                    if(node == 3) {
+                        cout << last << " " << mask << endl;
+                    }
+                    // if(mask == 7 && last == 0 && node == 3) {
+                    //     cout << newMask << " " << dp[mask][last] << endl;
+                    // }
+                    if(mat[last][node]) {
+                        // cout << last << "" << node << endl;
+                        dp[newMask][node] = min(dp[newMask][node], 1 + dp[mask][last]);
+                    }
                 }
             }
         }
-        return -1;
+        for(int mask = 1; mask < (1 << n); mask++) {
+            for(int last = 0; last < n; last++) {
+                if(dp[mask][last] == 1e9) continue;
+                if((mask & (1 << last)) == 0) continue;
+                for(int node = 0; node < n; node++) {
+                    int newMask = mask | (1 << node);
+                    if(node == 3) {
+                        cout << last << " " << mask << endl;
+                    }
+                    // if(mask == 7 && last == 0 && node == 3) {
+                    //     cout << newMask << " " << dp[mask][last] << endl;
+                    // }
+                    if(mat[last][node]) {
+                        // cout << last << "" << node << endl;
+                        dp[newMask][node] = min(dp[newMask][node], 1 + dp[mask][last]);
+                    }
+                }
+            }
+        }
+        for(int mask = 1; mask < (1 << n); mask++) {
+            for(int last = 0; last < n; last++) {
+                if(dp[mask][last] == 1e9) continue;
+                if((mask & (1 << last)) == 0) continue;
+                for(int node = 0; node < n; node++) {
+                    int newMask = mask | (1 << node);
+                    if(node == 3) {
+                        cout << last << " " << mask << endl;
+                    }
+                    // if(mask == 7 && last == 0 && node == 3) {
+                    //     cout << newMask << " " << dp[mask][last] << endl;
+                    // }
+                    if(mat[last][node]) {
+                        // cout << last << "" << node << endl;
+                        dp[newMask][node] = min(dp[newMask][node], 1 + dp[mask][last]);
+                    }
+                }
+            }
+        }
+        for(int mask = 1; mask < (1 << n); mask++) {
+            for(int last = 0; last < n; last++) {
+                if(dp[mask][last] == 1e9) continue;
+                if((mask & (1 << last)) == 0) continue;
+                for(int node = 0; node < n; node++) {
+                    int newMask = mask | (1 << node);
+                    if(node == 3) {
+                        cout << last << " " << mask << endl;
+                    }
+                    // if(mask == 7 && last == 0 && node == 3) {
+                    //     cout << newMask << " " << dp[mask][last] << endl;
+                    // }
+                    if(mat[last][node]) {
+                        // cout << last << "" << node << endl;
+                        dp[newMask][node] = min(dp[newMask][node], 1 + dp[mask][last]);
+                    }
+                }
+            }
+        }
+        for(int mask = 1; mask < (1 << n); mask++) {
+            for(int last = 0; last < n; last++) {
+                if(dp[mask][last] == 1e9) continue;
+                if((mask & (1 << last)) == 0) continue;
+                for(int node = 0; node < n; node++) {
+                    int newMask = mask | (1 << node);
+                    if(node == 3) {
+                        cout << last << " " << mask << endl;
+                    }
+                    // if(mask == 7 && last == 0 && node == 3) {
+                    //     cout << newMask << " " << dp[mask][last] << endl;
+                    // }
+                    if(mat[last][node]) {
+                        // cout << last << "" << node << endl;
+                        dp[newMask][node] = min(dp[newMask][node], 1 + dp[mask][last]);
+                    }
+                }
+            }
+        }
+        for(int mask = 1; mask < (1 << n); mask++) {
+            for(int last = 0; last < n; last++) {
+                if(dp[mask][last] == 1e9) continue;
+                if((mask & (1 << last)) == 0) continue;
+                for(int node = 0; node < n; node++) {
+                    int newMask = mask | (1 << node);
+                    if(node == 3) {
+                        cout << last << " " << mask << endl;
+                    }
+                    // if(mask == 7 && last == 0 && node == 3) {
+                    //     cout << newMask << " " << dp[mask][last] << endl;
+                    // }
+                    if(mat[last][node]) {
+                        // cout << last << "" << node << endl;
+                        dp[newMask][node] = min(dp[newMask][node], 1 + dp[mask][last]);
+                    }
+                }
+            }
+        }
+        int ans = INT_MAX;
+        for(auto x : mat) {
+            for(auto y : x) cout << y << " ";
+            cout << endl;
+        }
+        for(auto x : dp[(1 << n) - 1]) ans = min(x, ans);
+        return ans;
     }
 };
