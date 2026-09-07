@@ -1,20 +1,22 @@
 class Solution {
 public:
-    int MOD = 1e9 + 7;
     int distinctSubseqII(string s) {
         int n = s.size();
-        vector<long long> dp(n + 1);
-        dp[0] = 1;
         vector<int> last(26, -1);
-        for(int i = 1; i <= n; i++) {
-            dp[i] = (dp[i - 1] * 2) % MOD;
-            int ch = s[i - 1] - 97;
+        vector<int> dp(n);
+        dp[0] = 2;
+        last[s[0] - 'a'] = 0;
+        int MOD = 1e9 + 7;
+        for(int i = 1; i < n; i++) {
+            dp[i] = dp[i - 1] * 2 % MOD;
+            int ch = s[i] - 'a';
             if(last[ch] != -1) {
-                dp[i] =  (dp[i] - dp[last[ch]] + MOD) % MOD;
+                int prev = last[ch];
+                if(prev == 0) dp[i] = (dp[i] - 1 + MOD) % MOD;
+                else dp[i] = (dp[i] - dp[prev - 1] + MOD) % MOD;
             }
-            last[ch] = i - 1;
+            last[ch] = i;
         }
-        
-        return (dp[n] - 1 + MOD) % MOD;
+        return (dp[n - 1] - 1 + MOD) % MOD;
     }
 };
