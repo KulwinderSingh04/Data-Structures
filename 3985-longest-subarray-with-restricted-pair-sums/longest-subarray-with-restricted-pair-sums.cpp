@@ -8,14 +8,14 @@ public:
         int ans = 0;
         while(j < n) {
             int idx = i - 1;
-            for(int k = j - 1; k > max(0, idx); k--) {
+            for(int k = j - 1; k >= i; k--) {
                 if(mp.find(nums[j] + nums[k]) != mp.end()) {
                     int id = -*(mp[nums[j] + nums[k]].begin());
                     if(id < k) idx = max(idx, id);
                     else idx = max(idx, k);
                 }
             }
-            for(int k = j - 1; k > max(0, idx); k--) {
+            for(int k = j - 1; k >= i; k--) {
                 if(mp.find(abs(nums[j] - nums[k])) != mp.end()) {
                     if(abs(nums[j] - nums[k]) == nums[k]) {
                         if(mp[nums[k]].size() > 1) {
@@ -30,7 +30,6 @@ public:
                     }
                 }
             }
-            // cout << idx << endl;
             i = idx + 1;
             for(int k = i; k <= idx; k++) {
                 mp[nums[k]].erase(-k);
