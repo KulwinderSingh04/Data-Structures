@@ -30,7 +30,7 @@ public:
                     }
                 }
             }
-            cout << idx << endl;
+            // cout << idx << endl;
             i = idx + 1;
             for(int k = i; k <= idx; k++) {
                 mp[nums[k]].erase(-k);
