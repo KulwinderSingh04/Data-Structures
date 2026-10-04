@@ -1,30 +1,25 @@
 class Solution {
 public:
-    bool checkValidString(string s) {
-        stack<int> br, ast;
+    bool fun(int i, int cnt, string& s, vector<vector<int>>& dp) {
         int n = s.size();
-        int count = 0;
-        for(int i = 0; i < n; i++) {
-            if(s[i] == '(') br.push(i);
-            else if(s[i] == ')') {
-                if(br.size()) br.pop();
-                else {
-                    if(ast.size() == 0) return false;
-                    else {
-                        if(ast.top() < i) ast.pop();
-                        else return false;
-                    }
-                }
-            } else {
-                ast.push(i);
-            }
+        if(cnt < 0) return false;
+        if(i == n) return cnt == 0;
+        if(dp[i][cnt] != -1) return dp[i][cnt];
+        int ans = 0;
+        if(s[i] == '(') {
+            ans = ans || fun(i + 1, cnt + 1, s, dp);
+        } else if(s[i] == ')') {
+            ans = ans || fun(i + 1, cnt - 1, s, dp);
+        } else {
+            ans = ans || fun(i + 1, cnt + 1, s, dp);
+            ans = ans || fun(i + 1, cnt - 1, s, dp);
+            ans = ans || fun(i + 1, cnt, s, dp);
         }
-        if(br.size() > ast.size()) return false;
-        while(br.size()) {
-            if(br.top() > ast.top()) return false;
-            ast.pop();
-            br.pop();
-        }
-        return true;
+        return dp[i][cnt] = ans;
+    }
+    bool checkValidString(string s) {
+        int n = s.size();
+        vector<vector<int>> dp(n, vector<int> (n, -1));
+        return fun(0, 0, s, dp);
     }
 };
