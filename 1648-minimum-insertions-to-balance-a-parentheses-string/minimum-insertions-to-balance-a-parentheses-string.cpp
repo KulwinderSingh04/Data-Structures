@@ -2,26 +2,26 @@ class Solution {
 public:
     int minInsertions(string s) {
         int n = s.size();
-        stack<int> st;
         int ans = 0;
+        int cnt = 0;
         for(int i = 0; i < n; i++) {
             if(s[i] == '(') {
-                st.push('(');
+                cnt++;
             } else {
                 int c = 1;
                 if(i < n - 1 && s[i + 1] == ')') {
                     c++;
                     i++;
                 }
-                if(st.size()) {
+                if(cnt) {
                     ans += 2 - c;
-                    st.pop();
+                    cnt--;
                 } else {
                     ans += 2 - c + 1;
                 }
             }
         }
-        ans += 2 * st.size();
+        ans += 2 * cnt;
         return ans;
     }
 };
